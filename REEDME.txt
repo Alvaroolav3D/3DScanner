@@ -1,0 +1,3 @@
+En la carpeta server se encuentrar todos los scripts pensados para ejecutar desde el ordenador que actue como un servidor
+
+En la carpeta client se encuentran los scripts que deberia tener cada raspberry para poder ejecutar el funcionamiento deseado
