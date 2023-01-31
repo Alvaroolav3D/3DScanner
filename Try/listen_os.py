@@ -8,11 +8,21 @@ import picamera
 
 from ftplib import FTP
 
+# La funcion restart ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
+# haciendo el apagado de forma correcta y segura siempre antes de quitar la corriente
+
 def restart():
-    command = "/sbin/shutdown -r now"
-    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    print(output)
+    command = "/sbin/shutdown -r now" # comando
+    subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
+
+# comando para crear una carpeta con el nombre deseado
+
+def createFolder():
+    command = "mkdir " + input("Name of the folder: ") # comando
+    subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
+
+
+
 
 MCAST_GRP = '225.1.1.1'
 MCAST_PORT = 3179
@@ -30,7 +40,7 @@ print ("3D Scanner - Open Source listen script")
 
 debug = 1  # Turn debug message on/off
 
-savePath = "/SDCard/Pictures/"
+savePath = "/home/pi/Desktop/pruebas/3DScanner/"
 if not os.path.exists(savePath):
     os.makedirs(savePath)
 
