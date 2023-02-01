@@ -20,6 +20,17 @@ print(
 cmd = input("Command: ")
 print("")
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+
+if (cmd == "0"):
+    # data[0] seria el comando cmd
+
+    data = cmd
+    
+    sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+    sock.close()
+
 if (cmd == "1"):
     # data[0] seria el comando cmd
     # data[1] seria el nombre imagen
@@ -27,7 +38,6 @@ if (cmd == "1"):
     fileName = input("File name: ")
 
     data = cmd + " " + fileName
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+    
     sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
     sock.close()

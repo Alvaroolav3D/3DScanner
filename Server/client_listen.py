@@ -9,15 +9,18 @@ import picamera
 def restart():
 # La funcion restart ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
 # haciendo el apagado de forma correcta y segura siempre antes de quitar la corriente
-    command = "/sbin/shutdown -r now" # comando
+    command = "/sbin/shutdown -h now" # comando
     subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
     return "Rebooting"
 
 def takePhoto():
 # hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
 # en este script
+    filename = data[1]
+    print ("File name: " + data[1])
+
     print ("shooting")
-    camera.capture(savePath + data[3],'png')
+    camera.capture(savePath + data[1],'png')
     return "Took picture"
 
 def default():
@@ -54,7 +57,7 @@ print (" ")
 print ("3D Scanner - Socket listening")
 print (" ")
 
-savePath = "/home/pi/Desktop/pruebas/3DScanner/Try/Pictures"
+savePath = "/home/pi/Desktop/pruebas/3DScanner/Try/Pictures/"
 if not os.path.exists(savePath):
     os.makedirs(savePath)
 
@@ -67,16 +70,11 @@ with picamera.PiCamera() as camera:
     while True:
         newdata = s.recv(BUFFER_SIZE)
         print ("Got new data from the server")
-        data = newdata.decode().split()
+        data2 = newdata.decode()
+        data = data2.split()
         print("Data decoded")
         
-        print("Full data message: " + data)
-        
-        cmd = data[0]
-        filename = data[1]
-
+        cmd = int(data[0])
         print ("Received cmd: "+ data[0])
-        print ("Data: " + data[1])
-        print ("File name: " + data[2])
-
+        
         print(switch(cmd))

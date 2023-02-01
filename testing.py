@@ -36,4 +36,10 @@ switcher = {
 def switch(dayOfWeek):
     return switcher.get(dayOfWeek, "default")()
 
-print(switch(1))
+
+data = input() + " " + "cosotas"
+cmd = data.split()
+print(len(data))
+print(data[0])
+
+print(switch(int(data[0])))
