@@ -23,6 +23,25 @@ def takePhoto():
     camera.capture(savePath + data[1],'png')
     return "Took picture"
 
+def installPython3():
+    # Check if Python is already installed
+    try:
+        result = subprocess.run(["python3", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        version = result.stderr.decode().split()[1]
+        print(f"Python version {version} is already installed.")
+    except FileNotFoundError:
+        print("Python is not installed. Installing latest version...")
+        subprocess.run(["sudo", "apt-get", "update"])
+        subprocess.run(["sudo", "apt-get", "install", "-y", "python3"])
+        os.sys.exit()
+
+    # Update to the latest version of Python
+    print("Updating Python to the latest version...")
+    subprocess.run(["sudo", "apt-get", "update"])
+    subprocess.run(["sudo", "apt-get", "install", "-y", "python3"])
+
+    return "Done. Now you have Python"
+
 def default():
 # opcion que sirve para dejar constancia de que el comando utilizado no existe
     return "Incorrect command"
@@ -30,6 +49,7 @@ def default():
 switcher = {
     0: restart,
     1: takePhoto,
+    2: installPython3,
     }
 
 def switch(server_command):
