@@ -27,8 +27,11 @@ def installPython3(): #2
     # Check if Python is already installed
     try:
         result = subprocess.run(["python3", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        version = result.stderr.decode().split()[1]
-        print(f"Python version {version} is already installed.")
+        # Get the version of Python installed
+        version = os.sys.version_info[:3]
+        version_str = ".".join(str(x) for x in version)
+        print("Python version:", version_str)
+        
     except FileNotFoundError:
         print("Python is not installed. Installing latest version...")
         subprocess.run(["sudo", "apt-get", "update"])
