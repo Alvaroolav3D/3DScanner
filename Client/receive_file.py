@@ -7,15 +7,15 @@ def receive_file(file_name, target_ip, target_port):
             s.bind((target_ip, target_port))
             s.listen(1)
             conn, addr = s.accept()
-            print(f'Receiving file from {addr}...')
+            print('Receiving file from' + addr + '}...')
             while True:
                 data = conn.recv(4096)
                 if not data:
                     break
                 f.write(data)
-            print(f'File received and saved as {file_name}')
+            print('File received and saved as {' + file_name + '}')
         except socket.error as e:
-            print(f'Failed to receive file: {e}')
+            print('Failed to receive file: {' + e + '}')
         finally:
             conn.close()
             s.close()
