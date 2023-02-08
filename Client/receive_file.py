@@ -20,4 +20,4 @@ def receive_file(file_name, target_ip, target_port):
             conn.close()
             s.close()
 
-#receive_file('example.txt', '0.0.0.0', 5000)
+receive_file('example.txt', '0.0.0.0', 5000)
