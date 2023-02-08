@@ -1,7 +1,7 @@
 import socket
 
 def receive_file(file_name, target_ip, target_port):
-    with open('/Desktop/' + file_name, 'wb') as f:
+    with open('/Desktop/' + file_name, 'ab') as f:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.bind((target_ip, target_port))
