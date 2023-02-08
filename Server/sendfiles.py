@@ -93,5 +93,5 @@ for target_ip in target_ips:
         sftp_client.close()
         ssh_client.close()
         run_remote_command(target_ip, username, password, 'python3 receive_file.py')
-        send_file('example.txt', ['192.168.1.150', '192.168.1.150', '192.168.1.150', '192.168.1.150'], 5000)
+        #send_file('example.txt', ['192.168.1.150', '192.168.1.150', '192.168.1.150', '192.168.1.150'], 5000)
         print("nice")

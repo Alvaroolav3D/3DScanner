@@ -9,7 +9,7 @@ def receive_file(file_name, target_ip, target_port):
             s.bind((target_ip, target_port))
             s.listen(1)
             conn, addr = s.accept()
-            print('Receiving file from' + addr + '}...')
+            #print('Receiving file from' + addr + '}...')
             while True:
                 data = conn.recv(4096)
                 if not data:
