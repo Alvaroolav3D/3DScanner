@@ -1,7 +1,9 @@
 import socket
+import os
 
 def receive_file(file_name, target_ip, target_port):
-    with open(file_name, 'ab') as f:
+    file_path = os.path.join(os.getcwd(), file_name)
+    with open(file_path, 'ab') as f:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.bind((target_ip, target_port))
@@ -13,9 +15,9 @@ def receive_file(file_name, target_ip, target_port):
                 if not data:
                     break
                 f.write(data)
-            print('File received and saved as {' + file_name + '}')
+            print('File received and saved as {' + file_path + '}')
         except socket.error as e:
-            print('Failed to receive file: {' + e + '}')
+            print('Failed to receive file: {' + str(e) + '}')
         finally:
             conn.close()
             s.close()
