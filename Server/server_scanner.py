@@ -41,3 +41,11 @@ if (cmd == "1"):
     
     sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
     sock.close()
+
+if (cmd == "2"):
+    # data[0] seria el comando cmd
+
+    data = cmd
+    
+    sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+    sock.close()

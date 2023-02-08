@@ -6,14 +6,14 @@ import picamera
 
 #___________________FUNCTIONS___________________#
 
-def restart():
-# La funcion restart ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
+def powerOff(): #0
+# La funcion powerOff ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
 # haciendo el apagado de forma correcta y segura siempre antes de quitar la corriente
     command = "/sbin/shutdown -h now" # comando
     subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
     return "Rebooting"
 
-def takePhoto():
+def takePhoto(): #1
 # hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
 # en este script
     filename = data[1]
@@ -23,7 +23,7 @@ def takePhoto():
     camera.capture(savePath + data[1],'png')
     return "Took picture"
 
-def installPython3():
+def installPython3(): #2
     # Check if Python is already installed
     try:
         result = subprocess.run(["python3", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -47,7 +47,7 @@ def default():
     return "Incorrect command"
 
 switcher = {
-    0: restart,
+    0: powerOff,
     1: takePhoto,
     2: installPython3,
     }
@@ -77,7 +77,7 @@ print (" ")
 print ("3D Scanner - Socket listening")
 print (" ")
 
-savePath = "/home/pi/Desktop/pruebas/3DScanner/Try/Pictures/"
+savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/"
 if not os.path.exists(savePath):
     os.makedirs(savePath)
 
