@@ -12,8 +12,9 @@ BUFFER_SIZE = 10240
 
 print(
     "\nControl commands:\n" +
-    "Press 0 to reboot the raspberries\n" +
+    "Press 0 to poweroff the raspberries\n" +
     "Press 1 to takePhoto\n" + 
+    "Press 2 to install or update Python3\n" +
     "If you press another key, try again\n"
     )
 
