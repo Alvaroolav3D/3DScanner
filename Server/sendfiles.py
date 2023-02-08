@@ -56,23 +56,25 @@ def run_remote_command(ip, username, password, command):
 target_ips = ['192.168.1.150']
 receive_file_script = '''
 import socket
+import os
 
 def receive_file(file_name, target_ip, target_port):
-    with open('/Desktop/' + file_name, 'wb') as f:
+    file_path = os.path.join(os.getcwd(), file_name)
+    with open(file_path, 'ab') as f:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.bind((target_ip, target_port))
             s.listen(1)
             conn, addr = s.accept()
-            print(f'Receiving file from {addr}...')
+            #print('Receiving file from' + addr + '}...')
             while True:
                 data = conn.recv(4096)
                 if not data:
                     break
                 f.write(data)
-            print(f'File received and saved as {file_name}')
+            print('File received and saved as {' + file_path + '}')
         except socket.error as e:
-            print(f'Failed to receive file: {e}')
+            print('Failed to receive file: {' + str(e) + '}')
         finally:
             conn.close()
             s.close()
@@ -93,5 +95,5 @@ for target_ip in target_ips:
         sftp_client.close()
         ssh_client.close()
         run_remote_command(target_ip, username, password, 'python3 receive_file.py')
-        #send_file('example.txt', ['192.168.1.150', '192.168.1.150', '192.168.1.150', '192.168.1.150'], 5000)
+        send_file('example.txt', ['192.168.1.150', '192.168.1.150', '192.168.1.150', '192.168.1.150'], 5000)
         print("nice")
