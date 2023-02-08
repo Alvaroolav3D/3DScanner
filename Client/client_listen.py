@@ -76,9 +76,9 @@ s.bind(('', MULTICAST_CAMERA_PORT))
 mreq = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GRP), socket.INADDR_ANY)
 s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
-print (" ")
+print ()
 print ("3D Scanner - Socket listening")
-print (" ")
+print ()
 
 savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/"
 if not os.path.exists(savePath):
@@ -101,3 +101,4 @@ with picamera.PiCamera() as camera:
         print ("Received cmd: "+ data[0])
         
         print(switch(cmd))
+        print()

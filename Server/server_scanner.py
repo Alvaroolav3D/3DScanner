@@ -18,35 +18,38 @@ print(
     "If you press another key, try again\n"
     )
 
-cmd = input("Command: ")
-print("")
+
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
-if (cmd == "0"):
-    # data[0] seria el comando cmd
+while True:
+    cmd = input("Command: ")
+    print("")
 
-    data = cmd
-    
-    sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
-    sock.close()
+    if (cmd == "0"):
+        # data[0] seria el comando cmd
 
-if (cmd == "1"):
-    # data[0] seria el comando cmd
-    # data[1] seria el nombre imagen
+        data = cmd
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        #sock.close()
 
-    fileName = input("File name: ")
+    if (cmd == "1"):
+        # data[0] seria el comando cmd
+        # data[1] seria el nombre imagen
 
-    data = cmd + " " + fileName
-    
-    sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
-    sock.close()
+        fileName = input("File name: ")
 
-if (cmd == "2"):
-    # data[0] seria el comando cmd
+        data = cmd + " " + fileName
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        #sock.close()
 
-    data = cmd
-    
-    sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
-    sock.close()
+    if (cmd == "2"):
+        # data[0] seria el comando cmd
+
+        data = cmd
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        #sock.close()
