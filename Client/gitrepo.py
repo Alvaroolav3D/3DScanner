@@ -21,18 +21,18 @@ if not subprocess.run(["test", "-d", repo_name], stdout=subprocess.DEVNULL, stde
 
 # Change to the repository directory
 print("Changing to repository directory...")
-subprocess.run(["cd", repo_name])
+os.chdir(repo_name)
 
 # Fetch the latest updates from Github
 print("Fetching updates...")
 subprocess.run(["git", "fetch", "origin"])
 
 # Check if the local repository is up-to-date
-result = subprocess.run(["git", "diff", "HEAD", "origin/master"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+result = subprocess.run(["git", "diff", "HEAD", "origin/main"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 # Update the repository if there are new changes
 if result.stdout or result.stderr:
     print("Updating repository...")
-    subprocess.run(["git", "pull", "origin", "master"])
+    subprocess.run(["git", "pull", "origin", "main"])
 else:
     print("Repository is up-to-date.")
