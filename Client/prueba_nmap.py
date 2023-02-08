@@ -1,6 +1,5 @@
 import os
 import subprocess
-import nmap
 
 # Check if nmap is installed
 try:
@@ -10,19 +9,18 @@ except subprocess.CalledProcessError:
     print("Installing nmap...")
     os.system("sudo apt-get update && sudo apt-get install nmap -y")
 
-# Initialize nmap scanner object
-nm = nmap.PortScanner()
+# Scan for connected devices with Ethernet
+result = subprocess.run(["nmap", "-sP", "192.168.0.0/24"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+output = result.stdout.decode("utf-8")
 
-# Scan for devices on local network
-nm.scan(hosts='192.168.1.0/24', arguments='-sn') #sn perform a ping scan
+# Extract IP addresses from the nmap output
+ips = []
+for line in output.split("\n"):
+    if "Nmap scan report for" in line:
+        ip = line.split(" ")[-1]
+        ips.append(ip)
 
-# Get a list of all hosts up
-hosts_list = [(x, nm[x]['status']['state']) for x in nm.all_hosts()]
-
-# Extract just the IP addresses and store in an array
-ips = [host[0] for host in hosts_list if host[1] == 'up']
-
-# Print the list of IPs
+# Print the IP addresses of the connected devices
 print("Connected devices:")
 for ip in ips:
     print(ip)
