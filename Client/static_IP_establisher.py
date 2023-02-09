@@ -19,16 +19,7 @@ def get_interface_name():
 def disable_dhcp_and_set_static_ip(interface, ip_address, gateway):
     with open("/etc/dhcpcd.conf", "r") as file:
         lines = file.readlines()
-    '''
-    with open("/etc/dhcpcd.conf", "w") as file:
-        for line in lines:
-            if line.startswith("interface " + interface):
-                file.write(line)
-                file.write("static ip_address=" + ip_address + "\n")
-                file.write("static routers=" + gateway + "\n")
-            elif not line.startswith("interface "):
-                file.write(line)
-    '''
+        
     with open("/etc/dhcpcd.conf", "w") as file:
         for line in lines:
             if line.startswith("interface " + interface):
