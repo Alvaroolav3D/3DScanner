@@ -19,7 +19,7 @@ def get_interface_name():
 def disable_dhcp_and_set_static_ip(interface, ip_address, gateway):
     with open("/etc/dhcpcd.conf", "r") as file:
         lines = file.readlines()
-        
+
     with open("/etc/dhcpcd.conf", "w") as file:
         for line in lines:
             if line.startswith("interface " + interface):
@@ -50,3 +50,7 @@ if __name__ == "__main__":
     new_ip_address = input("Enter new IP address: ")
     disable_dhcp_and_set_static_ip(interface, new_ip_address, new_gateway)
     print("Static IP address and gateway set successfully")
+
+    print("Rebooting...")
+    command = "/sbin/shutdown -r now" # comando
+    subprocess.Popen(command.split(), stdout=subprocess.PIPE)

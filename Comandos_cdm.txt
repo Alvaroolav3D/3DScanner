@@ -1,0 +1,5 @@
+Actualizar repositorio
+
+cd ~ && cd Desktop && python3 gitrepo.py
+
+cd ~ && cd Desktop/3DScanner/Client && python3 ...
