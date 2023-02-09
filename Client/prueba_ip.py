@@ -1,6 +1,14 @@
 import subprocess
 import re
 
+def get_interface_name2():
+    output = subprocess.check_output(["ifconfig"])
+    interfaces = [line.split()[0] for line in output.splitlines() if line.startswith("eth")]
+    if len(interfaces) == 0:
+        raise Exception("No network interfaces found.")
+    return interfaces[0]
+
+
 def get_interface_name():
     output = subprocess.check_output(["ifconfig"])
     output = output.decode("utf-8")
@@ -12,9 +20,9 @@ def get_network_config(interface):
     output = output.decode("utf-8")
     ip_address = re.search("inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
     netmask = re.search("netmask ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    gateway = re.search("default gw ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    return (ip_address, netmask, gateway, dns)
+    #gateway = re.search("default gw ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
+    #dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
+    return (ip_address, netmask, 0, 0)
 
 #interface = get_interface_name()
 ip_address, netmask, gateway, dns = get_network_config("eth0")
