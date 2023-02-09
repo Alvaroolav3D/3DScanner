@@ -16,10 +16,10 @@ def get_network_config(interface):
     dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
     return (ip_address, netmask, gateway, dns)
 
-interface = get_interface_name()
-ip_address, netmask, gateway, dns = get_network_config(interface)
+#interface = get_interface_name()
+ip_address, netmask, gateway, dns = get_network_config("eth0")
 
-print("Interface:", interface)
+#print("Interface:", interface)
 print("IP address:", ip_address)
 print("Netmask:", netmask)
 print("Gateway:", gateway)
