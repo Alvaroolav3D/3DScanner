@@ -6,12 +6,12 @@ def get_network_config(interface):
     output = output.stdout.decode("utf-8")
     ip_address = re.search("inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
     netmask = re.search("netmask ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    gateway = re.search("default via ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
+    #gateway = re.search("default via ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
+    #dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
 
-    return (ip_address, netmask, gateway, dns)
+    return (ip_address, netmask, "gateway", "dns")
 
-def get_interface_name2():
+def get_interface_name():
     output = subprocess.run(["ip", "link", "show"], stdout=subprocess.PIPE)
     output = output.stdout.decode("utf-8")
     match = re.search("(\d+): ([a-z0-9]+):", output)
@@ -31,16 +31,18 @@ def disable_dhcp_and_set_static_ip(interface, ip_address, gateway):
                 file.write(line)
 
 if __name__ == "__main__":
-    interface = get_interface_name()
-    print("Network interface name:", interface)
+    #interface = get_interface_name()
+    interface = "eth0"
 
-    ip_address, netmask, gateway, dns = get_network_config("eth0")
+    ip_address, netmask, gateway, dns = get_network_config(interface)
+    
+    print("Network interface name:", interface)
     print("IP address:", ip_address)
     print("Netmask:", netmask)
     print("Gateway:", gateway)
     print("DNS server:", dns)
 
-    #new_ip_address = input("Enter new IP address: ")
-    #new_gateway = input("Enter new gateway: ")
-    #disable_dhcp_and_set_static_ip(interface, new_ip_address, new_gateway)
+    new_ip_address = input("Enter new IP address: ")
+    new_gateway = input("Enter new gateway: ")
+    disable_dhcp_and_set_static_ip(interface, new_ip_address, new_gateway)
     print("Static IP address and gateway set successfully")
