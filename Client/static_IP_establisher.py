@@ -2,13 +2,12 @@ import re
 import subprocess
 
 def get_network_config(interface):
-    output = subprocess.run(["ip", "address", "show", interface], stdout=subprocess.PIPE)
-    output = output.stdout.decode("utf-8")
+    output = subprocess.check_output(["ifconfig", interface])
+    output = output.decode("utf-8")
     ip_address = re.search("inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
     netmask = re.search("netmask ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-    #gateway = re.search("default via ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
+    #gateway = re.search("default gw ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
     #dns = re.search("nameserver ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)", output).group(1)
-
     return (ip_address, netmask, "gateway", "dns")
 
 def get_interface_name():
