@@ -32,4 +32,4 @@ def synchronize_time(server_ip):
         print("Error syncing time with NTP server:", e)
 
 # Call the function with the IP address of the NTP server
-synchronize_time("192.168.1.1")
+synchronize_time("192.168.1.145")
