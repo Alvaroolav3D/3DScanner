@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print("Gateway:", gateway)
     print("DNS server:", dns)
 
-    new_ip_address = input("Enter new IP address: ")
     new_gateway = input("Enter new gateway: ")
+    new_ip_address = input("Enter new IP address: ")
     disable_dhcp_and_set_static_ip(interface, new_ip_address, new_gateway)
     print("Static IP address and gateway set successfully")
