@@ -17,11 +17,6 @@ def get_interface_name2():
     match = re.search("(\d+): ([a-z0-9]+):", output)
     return match.group(2)
 
-def get_interface_name():
-    output = subprocess.check_output(["ifconfig"]).decode("utf-8")
-    interfaces = re.findall("^[a-z]+", output, re.MULTILINE)
-    return interfaces[0]
-
 def disable_dhcp_and_set_static_ip(interface, ip_address, gateway):
     with open("/etc/dhcpcd.conf", "r") as file:
         lines = file.readlines()
