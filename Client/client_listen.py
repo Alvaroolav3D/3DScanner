@@ -95,14 +95,15 @@ with picamera.PiCamera() as camera:
     while True:
         #newdata = s.recv(BUFFER_SIZE)
         newdata, address = s.recvfrom(BUFFER_SIZE)
-        sender_ip = str(address[0])
+        sender_ip = address[0]
+        print(sender_ip)
         print ("Got new data from the server")
         data2 = newdata.decode()
         data = data2.split()
         print("Data decoded")
         
         cmd = int(data[0])
-        print ("Received cmd: " + cmd + " from: " + sender_ip)
+        print ("Received cmd: " + cmd)
         
         print(switch(cmd))
         print()
