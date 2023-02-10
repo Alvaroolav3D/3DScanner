@@ -46,8 +46,15 @@ while True:
 
     if (cmd == "0"):
         # data[0] seria el comando cmd
+        print(
+            "Control commands:\n" +
+            "Press 0 to poweroff the raspberries\n" +
+            "Press 1 to reboot the raspberries\n"
+            )
+        
+        option = input("What do you want: ")
 
-        data = cmd
+        data = cmd + " " + option
         
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
 

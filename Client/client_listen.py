@@ -9,7 +9,15 @@ import picamera
 def powerOff(): #0
 # La funcion powerOff ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
 # haciendo el apagado de forma correcta y segura siempre antes de quitar la corriente
-    command = "/sbin/shutdown -h now" # comando
+    option = data[1]
+    print ("Option: " + option)
+
+    if(option == "0"):
+        command = "/sbin/shutdown -h now" # comando
+        
+    elif(option == "1"):
+        command = "/sbin/shutdown -r now" # comando
+    
     subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
     return "Rebooting"
 
