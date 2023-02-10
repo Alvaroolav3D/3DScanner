@@ -68,7 +68,7 @@ while True:
 
         connection, client_address = receive_socket.accept()
 
-        print ('Connected by', client_address)
+        print ('Connected by', client_address[0])
 
         sender_ip = client_address[0].split(".")[-1]
         receivedImageName = fileName + "_" + str(sender_ip)
