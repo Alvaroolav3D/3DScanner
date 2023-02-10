@@ -14,15 +14,15 @@ def powerOff(): #0
 
     if(option == "0"):
         print("apagar")
-        command = "/sbin/shutdown -h now" # comando
+        os.system("sudo poweroff") # comando
+        return "Power Off"
 
     elif(option == "1"):
         print("reiniciar")
-        command = "/sbin/shutdown -r now" # comando
-        
-    print(command)
-    subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
-    return "Rebooting"
+        os.system("sudo reboot") # comando
+        return "Rebooting"
+    
+    #subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
 
 def takePhoto(): #1
 # hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
