@@ -103,7 +103,7 @@ with picamera.PiCamera() as camera:
         print("Data decoded")
         
         cmd = int(data[0])
-        print ("Received cmd: " + data[0])
+        print ("Received cmd: " + data[0] + " from: " + sender_ip)
         
         print(switch(cmd))
         print()
