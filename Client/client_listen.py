@@ -95,7 +95,7 @@ with picamera.PiCamera() as camera:
     while True:
         #newdata = s.recv(BUFFER_SIZE)
         newdata, address = s.recvfrom(BUFFER_SIZE)
-        sender_ip = address[0]
+        sender_ip = str(address[0])
         print ("Got new data from the server")
         data2 = newdata.decode()
         data = data2.split()
