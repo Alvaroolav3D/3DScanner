@@ -13,9 +13,11 @@ def powerOff(): #0
     print ("Option: " + option)
 
     if(option == "0"):
+        print("apagar")
         command = "/sbin/shutdown -h now" # comando
-        
+
     elif(option == "1"):
+        print("reiniciar")
         command = "/sbin/shutdown -r now" # comando
     
     subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
