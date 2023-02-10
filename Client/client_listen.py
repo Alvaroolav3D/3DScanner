@@ -37,7 +37,7 @@ def takePhoto(): #1
     send_socket = socket.socket()
     send_socket.connect((SENDER_IP, SEND_IMAGE_PORT))
 
-    if os.path.isfile(newFolder + filename + '.png'):
+    if os.path.isfile(newFolder + filename):
         print("SI existe el path")
     else:
         print("NO existe el path")
