@@ -73,7 +73,6 @@ def switch(server_command):
 MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
 MULTICAST_CAMERA_PORT = 3179
 BUFFER_SIZE = 10240
-SERVER_IP = '192.168.1.153'
 
 # CONECTION WITH THE SERVER
 
@@ -94,14 +93,16 @@ with picamera.PiCamera() as camera:
     print ("Camera setup, waiting for command\n")
     
     while True:
-        newdata = s.recv(BUFFER_SIZE)
+        #newdata = s.recv(BUFFER_SIZE)
+        newdata, address = s.recvfrom(BUFFER_SIZE)
+        sender_ip = address[0]
         print ("Got new data from the server")
         data2 = newdata.decode()
         data = data2.split()
         print("Data decoded")
         
         cmd = int(data[0])
-        print ("Received cmd: "+ data[0])
+        print ("Received cmd: " + cmd + " from: " + sender_ip)
         
         print(switch(cmd))
         print()
