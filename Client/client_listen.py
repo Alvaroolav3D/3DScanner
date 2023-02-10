@@ -77,8 +77,6 @@ SERVER_IP = '192.168.1.153'
 
 # CONECTION WITH THE SERVER
 
-name = socket.getfqdn() #name of the local device
-
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(('', MULTICAST_CAMERA_PORT))
