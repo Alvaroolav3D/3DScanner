@@ -1,4 +1,5 @@
 import socket
+import os
 
 #___________________CODE___________________#
 
@@ -60,6 +61,10 @@ while True:
         
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
 
+        newFolder = "./3DScanner/Server/Pictures/" + fileName + "/"
+        if not os.path.exists(newFolder):
+            os.makedirs(newFolder)
+
         receive_socket = socket.socket()
         receive_socket.bind(('', RECEIVE_IMAGE_PORT))
         receive_socket.listen(1)
@@ -73,7 +78,7 @@ while True:
         sender_ip = client_address[0].split(".")[-1]
         receivedImageName = fileName + "_" + str(sender_ip)
 
-        with open(receivedImageName + '.png', 'wb') as image:
+        with open(newFolder + receivedImageName + '.png', 'wb') as image:
             while True:
                 imageData = connection.recv(BUFFER_SIZE)
                 if not imageData:

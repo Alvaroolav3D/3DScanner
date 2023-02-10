@@ -17,30 +17,30 @@ def takePhoto(): #1
 # hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
 # en este script
 
-    filename = data[1]
-    print ("File name: " + filename)
+    fileName = data[1]
+    print ("File name: " + fileName)
 
     #creo una carpeta con el nombre del archivo. Util si quiero hacer varias fotos con diferentes
     # iluminaciones y guardarlas bajo un mismo nombre ordenado
-    newFolder = "/home/pi/Desktop/3DScanner/Client/Pictures/" + filename + "/"
+    newFolder = "/home/pi/Desktop/3DScanner/Client/Pictures/" + fileName + "/"
     if not os.path.exists(newFolder):
         os.makedirs(newFolder)
 
     #Actualmente solo guardo una foto
     print ("shooting")
-    camera.capture(newFolder + filename,'png')
+    camera.capture(newFolder + fileName,'png')
     print("Took picture")
 
     #envio la imagen al servidor aqui
     send_socket = socket.socket()
     send_socket.connect((SENDER_IP, SEND_IMAGE_PORT))
 
-    if os.path.isfile(newFolder + filename):
+    if os.path.isfile(newFolder + fileName):
         print("SI existe el path")
     else:
         print("NO existe el path")
 
-    with open(newFolder + filename, 'rb') as image:
+    with open(newFolder + fileName, 'rb') as image:
         
         image_data = image.read()
         send_socket.sendall(image_data)
