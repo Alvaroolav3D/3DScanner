@@ -103,7 +103,7 @@ with picamera.PiCamera() as camera:
         print("Data decoded")
         
         cmd = int(data[0])
-        print ("Received cmd: " + cmd)
+        print ("Received cmd: " + data[0])
         
         print(switch(cmd))
         print()
