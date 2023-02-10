@@ -37,6 +37,11 @@ def takePhoto(): #1
     send_socket = socket.socket()
     send_socket.connect((SENDER_IP, SEND_IMAGE_PORT))
 
+    if os.path.isfile(newFolder + filename + '.png'):
+        print("SI existe el path")
+    else:
+        print("NO existe el path")
+
     with open(newFolder + filename + '.png', 'rb') as image:
         
         image_data = image.read()
