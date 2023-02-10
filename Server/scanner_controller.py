@@ -18,6 +18,7 @@ def get_device_ip():
 
 MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
 MULTICAST_CAMERA_PORT = 3179
+RECEIVE_IMAGE_PORT = 5001
 BUFFER_SIZE = 10240
 
 print(
@@ -58,6 +59,31 @@ while True:
         data = cmd + " " + fileName
         
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+
+        receive_socket = socket.socket()
+        receive_socket.bind(('', RECEIVE_IMAGE_PORT))
+        receive_socket.listen(1)
+
+        print ('Waiting for image...')
+
+        connection, client_address = receive_socket.accept()
+
+        print ('Connected by', client_address)
+
+        sender_ip = client_address[0].split(".")[-1]
+        receivedImageName = fileName + "_" + str(sender_ip)
+
+        with open(receivedImageName + '.png', 'wb') as image:
+            while True:
+                data = connection.recv(BUFFER_SIZE)
+                if not data:
+                    break
+                image.write(data)
+
+        connection.close()
+
+        print ('Image received successfully!')
+
 
     if (cmd == "2"):
         # data[0] seria el comando cmd

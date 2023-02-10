@@ -20,16 +20,29 @@ def takePhoto(): #1
     filename = data[1]
     print ("File name: " + filename)
 
-    savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/" + filename + "/"
-    if not os.path.exists(savePath):
-        os.makedirs(savePath)
+    #creo una carpeta con el nombre del archivo. Util si quiero hacer varias fotos con diferentes
+    # iluminaciones y guardarlas bajo un mismo nombre ordenado
+    newFolder = "/home/pi/Desktop/3DScanner/Client/Pictures/" + filename + "/"
+    if not os.path.exists(newFolder):
+        os.makedirs(newFolder)
 
+    #Actualmente solo guardo una foto
     print ("shooting")
-    camera.capture(savePath + filename,'png')
-    
+    camera.capture(newFolder + filename,'png')
+    print("Took picture")
+
     #envio la imagen al servidor aqui
+    send_socket = socket.socket()
+    send_socket.connect((SENDER_IP, SEND_IMAGE_PORT))
+
+    with open(newFolder + filename + '.png', 'rb') as image:
+        
+        image_data = image.read()
+        send_socket.sendall(image_data)
     
-    return "Took picture"
+    send_socket.close()
+    
+    return "Sent picture to: " + SENDER_IP
 
 def installPython3(): #2
     # Check if Python is already installed
@@ -72,6 +85,7 @@ def switch(server_command):
 
 MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
 MULTICAST_CAMERA_PORT = 3179
+SEND_IMAGE_PORT = 5001
 BUFFER_SIZE = 10240
 
 # CONECTION WITH THE SERVER
@@ -95,13 +109,13 @@ with picamera.PiCamera() as camera:
     while True:
         #newdata = s.recv(BUFFER_SIZE)
         newdata, address = s.recvfrom(BUFFER_SIZE)
-        sender_ip = address[0]
+        SENDER_IP = address[0]
         print ("Got new data from the server")
         data = newdata.decode().split()
         print("Data decoded")
         
         cmd = int(data[0])
-        print ("Received cmd: " + data[0] + " from: " + sender_ip)
+        print ("Received cmd: " + data[0] + " from: " + SENDER_IP)
         
         print(switch(cmd))
         print()
