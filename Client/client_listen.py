@@ -20,7 +20,7 @@ def takePhoto(): #1
     filename = data[1]
     print ("File name: " + filename)
 
-    savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/"+filename
+    savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/" + filename + "/"
     if not os.path.exists(savePath):
         os.makedirs(savePath)
 
@@ -97,7 +97,6 @@ with picamera.PiCamera() as camera:
         newdata, address = s.recvfrom(BUFFER_SIZE)
         sender_ip = address[0]
         print ("Got new data from the server")
-        data2 = newdata.decode()
         data = newdata.decode().split()
         print("Data decoded")
         
