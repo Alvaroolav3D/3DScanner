@@ -1,5 +1,20 @@
-Actualizar repositorio
+___________Actualizar repositorio___________
 
 cd ~ && cd Desktop && python3 gitrepo.py
 
 cd ~ && cd Desktop/3DScanner/Client && python3 ...
+
+___________Activar el arranque automatico de scripts___________
+
+1. Para que el archivo de start.sh sea ejecutable por linux, dentro de la carpeta necesito ejecutar el siguiente comando en la terminal
+
+chmod +x start.sh
+
+2. Despues modifico el archivo rc.local
+
+sudo nano /etc/rc.local
+
+3. Antes de la linea 'exit 0' añado:
+
+~/Desktop/3DScanner/Client/start.sh &  #esto seria un path relativo
+/home/pi/Desktop/3DScanner/Client/start.sh &  #esto seria un path absoluto y el recomendado
