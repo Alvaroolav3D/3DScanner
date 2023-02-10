@@ -19,7 +19,8 @@ def powerOff(): #0
     elif(option == "1"):
         print("reiniciar")
         command = "/sbin/shutdown -r now" # comando
-    
+        
+    print(command)
     subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
     return "Rebooting"
 
