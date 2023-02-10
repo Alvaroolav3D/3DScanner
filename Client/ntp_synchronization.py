@@ -10,7 +10,7 @@ try:
     print("ntplib library is already installed.")
 except ImportError:
     print("ntplib library not found. Installing...")
-    subprocess.run(["pip", "install", "ntplib"])
+    subprocess.run(["pip3", "install", "ntplib"])
     print("ntplib library installed.")
 
 def synchronize_time(server_ip):

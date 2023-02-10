@@ -10,7 +10,7 @@ except subprocess.CalledProcessError:
     os.system("sudo apt-get update && sudo apt-get install nmap -y")
 
 # Scan for connected devices with Ethernet
-result = subprocess.run(["nmap", "-sP", "192.168.1.0/24"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+result = subprocess.run(["sudo", "nmap", "-sP", "192.168.1.0/24"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 output = result.stdout.decode("utf-8")
 
 # Extract IP addresses from the nmap output

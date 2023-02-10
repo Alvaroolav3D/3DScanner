@@ -16,11 +16,19 @@ def powerOff(): #0
 def takePhoto(): #1
 # hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
 # en este script
+
     filename = data[1]
-    print ("File name: " + data[1])
+    print ("File name: " + filename)
+
+    savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/"+filename
+    if not os.path.exists(savePath):
+        os.makedirs(savePath)
 
     print ("shooting")
-    camera.capture(savePath + data[1],'png')
+    camera.capture(savePath + filename,'png')
+    
+    #envio la imagen al servidor aqui
+    
     return "Took picture"
 
 def installPython3(): #2
@@ -65,6 +73,7 @@ def switch(server_command):
 MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
 MULTICAST_CAMERA_PORT = 3179
 BUFFER_SIZE = 10240
+SERVER_IP = '192.168.1.153'
 
 # CONECTION WITH THE SERVER
 
@@ -79,10 +88,6 @@ s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 print ()
 print ("3D Scanner - Socket listening")
 print ()
-
-savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/"
-if not os.path.exists(savePath):
-    os.makedirs(savePath)
 
 # WAITING SERVER COMMANDS
 
