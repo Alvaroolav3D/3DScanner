@@ -42,7 +42,7 @@ def takePhoto(): #1
     else:
         print("NO existe el path")
 
-    with open(newFolder + filename + '.png', 'rb') as image:
+    with open(newFolder + filename, 'rb') as image:
         
         image_data = image.read()
         send_socket.sendall(image_data)
