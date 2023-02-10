@@ -12,7 +12,7 @@ ___________Activar el arranque automatico de scripts___________
 
 1. Para que el archivo de start.sh sea ejecutable por linux, dentro de la carpeta necesito ejecutar el siguiente comando en la terminal
 
-chmod +x start.sh
+sudo chmod +x /home/pi/Desktop/3DScanner/Client/start.sh
 
 2. Despues modifico el archivo rc.local
 
