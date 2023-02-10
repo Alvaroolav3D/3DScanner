@@ -13,12 +13,10 @@ def powerOff(): #0
     print ("Option: " + option)
 
     if(option == "0"):
-        print("apagar")
         os.system("sudo poweroff") # comando
         return "Power Off"
 
     elif(option == "1"):
-        print("reiniciar")
         os.system("sudo reboot") # comando
         return "Rebooting"
     
