@@ -2,6 +2,7 @@ import socket
 import struct
 import subprocess
 import os
+import time
 import picamera
 
 #___________________FUNCTIONS___________________#
@@ -29,6 +30,7 @@ def takePhoto(): #1
     #Actualmente solo guardo una foto
     print ("shooting")
     camera.capture(newFolder + filename,'png')
+    time.sleep(2)
     print("Took picture")
 
     #envio la imagen al servidor aqui

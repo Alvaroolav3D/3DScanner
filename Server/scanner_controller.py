@@ -75,10 +75,10 @@ while True:
 
         with open(receivedImageName + '.png', 'wb') as image:
             while True:
-                data = connection.recv(BUFFER_SIZE)
-                if not data:
+                imageData = connection.recv(BUFFER_SIZE)
+                if not imageData:
                     break
-                image.write(data)
+                image.write(imageData)
 
         connection.close()
 
