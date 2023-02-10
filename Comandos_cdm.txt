@@ -4,6 +4,10 @@ cd ~ && cd Desktop && python3 gitrepo.py
 
 cd ~ && cd Desktop/3DScanner/Client && python3 ...
 
+___________Borrar carpeta___________
+
+sudo rm -r 3DScanner
+
 ___________Activar el arranque automatico de scripts___________
 
 1. Para que el archivo de start.sh sea ejecutable por linux, dentro de la carpeta necesito ejecutar el siguiente comando en la terminal
