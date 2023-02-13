@@ -1,6 +1,6 @@
 ___________Actualizar repositorio___________
 
-cd ~ && cd Desktop && python3 gitrepo.py
+cd ~ && cd Desktop && python3 git_Update_Repository.py
 
 cd ~ && cd Desktop/3DScanner/Client && python3 ...
 
