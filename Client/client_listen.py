@@ -42,7 +42,7 @@ def takePhoto(): #1
 
     #envio la imagen al servidor aqui
     send_socket = socket.socket()
-    send_socket.connect((SENDER_IP, SEND_IMAGE_PORT))
+    send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
 
     if os.path.isfile(savePath + fileName):
         print("SI existe el path")
@@ -80,6 +80,9 @@ def installPython3(): #2
 
     return "Done. Now you have Python"
 
+def synchronizeTime(): #3
+    return "synchronized"
+
 def default():
 # opcion que sirve para dejar constancia de que el comando utilizado no existe
     return "Incorrect command"
@@ -88,6 +91,7 @@ switcher = {
     0: powerOff,
     1: takePhoto,
     2: installPython3,
+    3: synchronizeTime,
     }
 
 def switch(server_command):
@@ -97,17 +101,17 @@ def switch(server_command):
 
 # CONSTANT VARIABLES
 
-MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
-MULTICAST_CAMERA_PORT = 3179
-SEND_IMAGE_PORT = 5001
-BUFFER_SIZE = 10240
+MULTICAST_CAMERA_GROUP = '225.1.1.1' #direccion multicast por la que escucha los comandos del servidor
+MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recivir los datagramas con los comandos del servidor
+IMAGE_TRANSFER_PORT = 5001 #puerto utilizado para enviar las imagenes al servidor una vez realizadas
+BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el socket
 
 # CONECTION WITH THE SERVER
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(('', MULTICAST_CAMERA_PORT))
-mreq = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GRP), socket.INADDR_ANY)
+s.bind(('', MULTICAST_COMMAND_PORT))
+mreq = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GROUP), socket.INADDR_ANY)
 s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
 print ()

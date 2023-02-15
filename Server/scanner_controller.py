@@ -17,10 +17,10 @@ def get_device_ip():
 
 # CONSTANT VARIABLES
 
-MULTICAST_CAMERA_GRP = '225.1.1.1' #grupo de direccion multicast
-MULTICAST_CAMERA_PORT = 3179
-RECEIVE_IMAGE_PORT = 5001
-BUFFER_SIZE = 10240
+MULTICAST_CAMERA_GROUP = '225.1.1.1' #direccion multicast por la que escucha los comandos del servidor
+MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recivir los datagramas con los comandos del servidor
+IMAGE_TRANSFER_PORT = 5001 #puerto utilizado para enviar las imagenes al servidor una vez realizadas
+BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el socket
 
 print(
     "\nControl commands:\n" +
@@ -56,7 +56,7 @@ while True:
 
         data = cmd + " " + option
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
     if (cmd == "1"):
         # data[0] seria el comando cmd
@@ -66,14 +66,14 @@ while True:
 
         data = cmd + " " + fileName
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
         savePath = "Server/Pictures/" + fileName + "/"
         if not os.path.exists(savePath):
             os.makedirs(savePath)
 
         receive_socket = socket.socket()
-        receive_socket.bind(('', RECEIVE_IMAGE_PORT))
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
         receive_socket.listen(1)
 
         print ('Waiting for image...')
@@ -102,7 +102,7 @@ while True:
 
         data = cmd
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
     if (cmd == "3"):
         # data[0] seria el comando cmd
@@ -112,4 +112,4 @@ while True:
 
         data = cmd + " " + serverIP
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GRP, MULTICAST_CAMERA_PORT))
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
