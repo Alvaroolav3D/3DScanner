@@ -1,0 +1,9 @@
+[Unit]
+Description=My Script
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/Desktop/git_Update_Repository.py
+
+[Install]
+WantedBy=multi-user.target

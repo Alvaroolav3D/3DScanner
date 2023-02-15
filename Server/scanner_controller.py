@@ -65,39 +65,9 @@ while True:
     if (cmd == "1"):
         # data[0] seria el comando cmd
 
-        fileName = input("File name: ")
-
-        data = cmd + " " + fileName
+        data = cmd
         
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
-
-        savePath = "Server/Pictures/" + fileName + "/"
-        if not os.path.exists(savePath):
-            os.makedirs(savePath)
-
-        receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.listen(1)
-
-        print ('Waiting for image...')
-
-        connection, client_address = receive_socket.accept()
-
-        print ('Connected by', client_address[0])
-
-        sender_ip = client_address[0].split(".")[-1]
-        receivedImageName = fileName + "_" + str(sender_ip)
-
-        with open(savePath + receivedImageName + '.png', 'wb') as image:
-            while True:
-                imageData = connection.recv(BUFFER_SIZE)
-                if not imageData:
-                    break
-                image.write(imageData)
-
-        connection.close()
-
-        print ('Image received successfully!')
 
     if (cmd == "2"):
         # data[0] seria el comando cmd
@@ -129,7 +99,7 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.listen(1)
+        receive_socket.listen(1) #en vez de 1 habria que poner el numero de camaras que tenga
 
         print ('Waiting for image...')
 
