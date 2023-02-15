@@ -83,6 +83,11 @@ def installPython3(): #2
 def synchronizeTime(): #3
     return "synchronized"
 
+def systemUpdate(): #4
+    subprocess.run(["sudo", "apt-get", "update"])
+    subprocess.run(["sudo", "apt-get", "upgrade", "-y"])
+    return "Updated"
+
 def default():
 # opcion que sirve para dejar constancia de que el comando utilizado no existe
     return "Incorrect command"
