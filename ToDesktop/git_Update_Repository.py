@@ -11,6 +11,7 @@ except subprocess.CalledProcessError:
 
 # Define the repository name and URL
 repo_name = "3DScanner"
+repo_path = "/home/pi/Desktop/"
 repo_url = "https://github.com/Alvaroolav3D/3DScanner.git"
 
 # Check if the repository exists locally

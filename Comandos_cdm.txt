@@ -24,3 +24,32 @@ sudo nano /etc/rc.local
 
 ~/Desktop/3DScanner/Client/start.sh &  #esto seria un path relativo
 /home/pi/Desktop/3DScanner/Client/start.sh &  #esto seria un path absoluto y el recomendado
+
+___________Activar el arranque automatico de scripts___________
+
+Crear un archivo launcher.service en 
+
+/etc/systemd/system
+
+Darle permisos con: 
+
+sudo chmod 644 /etc/systemd/system/launcher.service
+
+Habilita el servicio para que se inicie automáticamente en el arranque con: 
+
+sudo systemctl enable launcher.service
+
+Para iniciar el servicion manualmente:
+
+sudo systemctl start launcher.service
+
+Una vez que hayas hecho esto, el script se iniciará automáticamente en el arranque y podrás ver 
+su estado y salida de registro usando los comandos de systemd, como systemctl status my-script.service 
+o journalctl -u my-script.service.
+
+
+ESTO FUNCIONA POR ALGUN MOTIVO
+
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
