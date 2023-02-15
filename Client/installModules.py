@@ -5,7 +5,8 @@ import subprocess
 subprocess.run(['sudo', 'pip3', 'install', '--upgrade', 'pip'])
 
 # Lista de módulos a instalar
-modules = ['subprocess', 'importlib', 'time', 'os', 'datetime', 'socket', 'struct', 'picamera']
+#modules = ['subprocess', 'importlib', 'time', 'os', 'datetime', 'socket', 'struct', 'picamera']
+modules = ['importlib', 'datetime', 'picamera', 'ntplib']
 
 # Iterar sobre la lista de módulos y comprobar si están instalados
 for module in modules:
