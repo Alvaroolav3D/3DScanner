@@ -24,10 +24,14 @@ BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el 
 
 print(
     "\nControl commands:\n" +
+
     "Press 0 to poweroff the raspberries\n" +
-    "Press 1 to takePhoto\n" + 
+    "Press 1 to update the system of the raspberries\n" +
     "Press 2 to install or update Python3\n" +
     "Press 3 to synchronize_time with the server\n" +
+    "Press 4 to takePhoto\n" + 
+    "Press 5 to check what raspberries are listening\n" + 
+
     "If you press another key, try again\n"
     )
 
@@ -59,6 +63,57 @@ while True:
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
     if (cmd == "1"):
+        # data[0] seria el comando cmd
+
+        fileName = input("File name: ")
+
+        data = cmd + " " + fileName
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+
+        savePath = "Server/Pictures/" + fileName + "/"
+        if not os.path.exists(savePath):
+            os.makedirs(savePath)
+
+        receive_socket = socket.socket()
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.listen(1)
+
+        print ('Waiting for image...')
+
+        connection, client_address = receive_socket.accept()
+
+        print ('Connected by', client_address[0])
+
+        sender_ip = client_address[0].split(".")[-1]
+        receivedImageName = fileName + "_" + str(sender_ip)
+
+        with open(savePath + receivedImageName + '.png', 'wb') as image:
+            while True:
+                imageData = connection.recv(BUFFER_SIZE)
+                if not imageData:
+                    break
+                image.write(imageData)
+
+        connection.close()
+
+        print ('Image received successfully!')
+
+    if (cmd == "2"):
+        # data[0] seria el comando cmd
+
+        data = cmd
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+
+    if (cmd == "3"):
+        # data[0] seria el comando cmd
+
+        data = cmd
+        
+        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+
+    if (cmd == "4"):
         # data[0] seria el comando cmd
         # data[1] seria el nombre imagen
 
@@ -96,20 +151,9 @@ while True:
 
         print ('Image received successfully!')
 
-
-    if (cmd == "2"):
+    if (cmd == "5"):
         # data[0] seria el comando cmd
 
         data = cmd
-        
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
-
-    if (cmd == "3"):
-        # data[0] seria el comando cmd
-        # data[1] seria la ip de este dispositivo
-
-        serverIP = get_device_ip()
-
-        data = cmd + " " + serverIP
         
         sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
