@@ -1,6 +1,13 @@
 import os
 import subprocess
 
+# Define the repository name and URL
+repo_path = "/home/pi/Desktop/3DScanner"
+repo_url = "https://github.com/Alvaroolav3D/3DScanner.git"
+
+# Change to the repository directory
+os.chdir(repo_path)
+
 # Check if git is installed
 try:
     subprocess.run(["git", "--version"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -9,20 +16,11 @@ except subprocess.CalledProcessError:
     print("Installing git...")
     os.system("sudo apt-get update && sudo apt-get install git -y")
 
-# Define the repository name and URL
-repo_name = "3DScanner"
-repo_path = "/home/pi/Desktop/"
-repo_url = "https://github.com/Alvaroolav3D/3DScanner.git"
-
 # Check if the repository exists locally
-if not subprocess.run(["test", "-d", repo_name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0:
+if not subprocess.run(["test", "-d", repo_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0:
     # Clone the repository if it doesn't exist
     print("Cloning repository...")
     subprocess.run(["git", "clone", repo_url])
-
-# Change to the repository directory
-print("Changing to repository directory...")
-os.chdir(repo_name)
 
 # Fetch the latest updates from Github
 print("Fetching updates...")
