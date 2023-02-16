@@ -3,7 +3,7 @@ Description=Client Listen Service
 After=launcher.service
 
 [Service]
-Type=simple #ejecuta el proceso en primer plano y al terminar el servicio no lo cierra
+Type=simple
 ExecStart=/usr/bin/python3 /home/pi/Desktop/3DScanner/Client/client_listen.py
 Restart=always
 
