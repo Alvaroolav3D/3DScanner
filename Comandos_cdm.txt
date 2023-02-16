@@ -8,22 +8,6 @@ ___________Borrar carpeta___________
 
 sudo rm -r 3DScanner
 
-___________Activar el arranque automatico de scripts___________
-
-1. Para que el archivo de start.sh sea ejecutable por linux, dentro de la carpeta necesito ejecutar el siguiente comando en la terminal
-
-sudo chmod +x /home/pi/Desktop/3DScanner/Client/start.sh
-
-sudo /etc/rc.local
-
-2. Despues modifico el archivo rc.local
-
-sudo nano /etc/rc.local
-
-3. Antes de la linea 'exit 0' añado:
-
-~/Desktop/3DScanner/Client/start.sh &  #esto seria un path relativo
-/home/pi/Desktop/3DScanner/Client/start.sh &  #esto seria un path absoluto y el recomendado
 
 ___________Activar el arranque automatico de scripts___________
 
