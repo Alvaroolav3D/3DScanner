@@ -7,25 +7,26 @@ import picamera
 #___________________FUNCTIONS___________________#
 
 def powerOff(): #0
-# La funcion powerOff ejecuta en un hilo a parte el comando necesario para apagar la raspberry,
-# haciendo el apagado de forma correcta y segura siempre antes de quitar la corriente
+# The powerOff function executes in a separate thread the command needed to turn off the raspberry,
+# doing the shutdown correctly and safely always before removing the power.
+
     option = data[1]
     print ("Option: " + option)
 
     if(option == "0"):
-        os.system("sudo poweroff") # comando
+        os.system("sudo poweroff") # command
         return "Power Off"
 
     elif(option == "1"):
-        os.system("sudo reboot") # comando
+        os.system("sudo reboot") # command
         return "Rebooting"
-    
-    #subprocess.Popen(command.split(), stdout=subprocess.PIPE) #abro un subproceso nuevo para ejecutar la funcion
 
 def systemUpdate(): #1
+# Checks for available system updates and proceeds to upgrade them
+
     subprocess.run(["sudo", "apt-get", "update"])
     subprocess.run(["sudo", "apt-get", "upgrade", "-y"])
-    return "Updated"
+    return "Upgrade completed"
 
 def installPython3(): #2
     # Check if Python is already installed
@@ -47,37 +48,32 @@ def installPython3(): #2
     subprocess.run(["sudo", "apt-get", "update"])
     subprocess.run(["sudo", "apt-get", "install", "-y", "python3"])
 
-    return "Done. Now you have Python"
+    return "Done. Now you have Python updated"
 
 def synchronizeTime(): #3
-    return "synchronized"
+    return "Synchronized"
 
 def takePhoto(): #4
-# hace una foto con el nombre elegido desde el servidor y lo almacena en el directorio definido
-# en este script
+# takes a picture with the chosen name from the server and stores it in the defined directory
+# in this script
 
     fileName = data[1]
     print ("File name: " + fileName)
 
-    #creo una carpeta con el nombre del archivo. Util si quiero hacer varias fotos con diferentes
-    # iluminaciones y guardarlas bajo un mismo nombre ordenado
+    # Create a folder with the file name. Useful if I want to take several photos with different
+    # lighting and save them under the same sorted name.
     savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/" + fileName + "/"
     if not os.path.exists(savePath):
         os.makedirs(savePath)
 
-    #Actualmente solo guardo una foto
+    # Currently I only keep one photo
     print ("shooting")
     camera.capture(savePath + fileName,'png')
     print("Took picture")
 
-    #envio la imagen al servidor aqui
+    # Send the image to the server
     send_socket = socket.socket()
     send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
-
-    if os.path.isfile(savePath + fileName):
-        print("SI existe el path")
-    else:
-        print("NO existe el path")
 
     with open(savePath + fileName, 'rb') as image:
         
@@ -92,16 +88,15 @@ def checkListening(): #5
     return "Done."
 
 def default():
-# opcion que sirve para dejar constancia de que el comando utilizado no existe
+# option used to record that the used command does not exist
     return "Incorrect command"
 
-
 switcher = {
-    0: powerOff, # Press 0 to poweroff the raspberries
+    0: powerOff, # Press 0 to poweroff or reboot the raspberries
     1: systemUpdate, # Press 1 to update the system of the raspberries
     2: installPython3, # Press 2 to install or update Python3
     3: synchronizeTime, # Press 3 to synchronize_time with the server
-    4: takePhoto, # Press 4 to takePhoto
+    4: takePhoto, # Press 4 to take a picture
     5: checkListening, # Press 5 to check what raspberries are listening
     
     # If you press another key, try again
@@ -114,22 +109,21 @@ def switch(server_command):
 
 # CONSTANT VARIABLES
 
-MULTICAST_CAMERA_GROUP = '225.1.1.1' #direccion multicast por la que escucha los comandos del servidor
-MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recibir los datagramas con los comandos del servidor
-IMAGE_TRANSFER_PORT = 5001 #puerto utilizado para enviar las imagenes al servidor una vez realizadas
-BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el socket
+MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for commands from the server
+MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
+IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
+BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
 
-# CONECTION WITH THE SERVER
+# MAIN
 
+# Conection with the server
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(('', MULTICAST_COMMAND_PORT))
 mreq = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GROUP), socket.INADDR_ANY)
 s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
-print ()
-print ("3D Scanner - Socket listening")
-print ()
+print ("\n3D Scanner - Socket listening\n")
 
 # WAITING SERVER COMMANDS
 
