@@ -115,7 +115,7 @@ def switch(server_command):
 # CONSTANT VARIABLES
 
 MULTICAST_CAMERA_GROUP = '225.1.1.1' #direccion multicast por la que escucha los comandos del servidor
-MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recivir los datagramas con los comandos del servidor
+MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recibir los datagramas con los comandos del servidor
 IMAGE_TRANSFER_PORT = 5001 #puerto utilizado para enviar las imagenes al servidor una vez realizadas
 BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el socket
 

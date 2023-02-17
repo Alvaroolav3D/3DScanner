@@ -1,13 +1,11 @@
 import socket
 import os
 
-#___________________CODE___________________#
-
-# METHODS
+#___________________FUNCTIONS___________________#
 
 def get_device_ip():
-# conecto con un servidor DNS de google que siempre esta activo 
-# para comprobar simplemente cual es la ip de mi dispositivo
+# Connect to a google DNS server that is always active
+# to simply check what the ip of my device is
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -15,41 +13,46 @@ def get_device_ip():
     s.close()
     return device_ip
 
+#___________________CODE___________________#
+
 # CONSTANT VARIABLES
 
-MULTICAST_CAMERA_GROUP = '225.1.1.1' #direccion multicast por la que escucha los comandos del servidor
-MULTICAST_COMMAND_PORT = 3179 #puerto que abre para recivir los datagramas con los comandos del servidor
-IMAGE_TRANSFER_PORT = 5001 #puerto utilizado para enviar las imagenes al servidor una vez realizadas
-BUFFER_SIZE = 10240 #tamaño del buffer utilizado en el paso de mensajes por el socket
+MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for commands from the server
+MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
+IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
+BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
+
+# MAIN
 
 print(
     "\nControl commands:\n" +
 
-    "Press 0 to poweroff the raspberries\n" +
+    "Press 0 to poweroff or reboot the raspberries\n" +
     "Press 1 to update the system of the raspberries\n" +
     "Press 2 to install or update Python3\n" +
     "Press 3 to synchronize_time with the server\n" +
-    "Press 4 to takePhoto\n" + 
+    "Press 4 to take a picture\n" + 
     "Press 5 to check what raspberries are listening\n" + 
 
     "If you press another key, try again\n"
     )
 
-
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+# Create the socket in charge of sending commands to the different raspberries
+cmd_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+cmd_socket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
 while True:
     cmd = input("Command: ")
     print("")
 
     if (cmd == "-1"):
-        sock.close()
+        cmd_socket.close()
         break
 
-    if (cmd == "0"):
-        # data[0] seria el comando cmd
+    if (cmd == "0"): # Press 0 to poweroff or reboot the raspberries
+        # data[0] is the chosen command
+        # data[1] is the chosen option
+
         print(
             "Control commands:\n" +
             "Press 0 to poweroff the raspberries\n" +
@@ -60,38 +63,38 @@ while True:
 
         data = cmd + " " + option
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
-    if (cmd == "1"):
-        # data[0] seria el comando cmd
-
-        data = cmd
-        
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
-
-    if (cmd == "2"):
-        # data[0] seria el comando cmd
+    if (cmd == "1"): # Press 1 to update the system of the raspberries
+        # data[0] is the chosen command
 
         data = cmd
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
-    if (cmd == "3"):
-        # data[0] seria el comando cmd
+    if (cmd == "2"): # Press 2 to install or update Python3
+        # data[0] is the chosen command
 
         data = cmd
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
-    if (cmd == "4"):
-        # data[0] seria el comando cmd
-        # data[1] seria el nombre imagen
+    if (cmd == "3"): # Press 3 to synchronize_time with the server
+        # data[0] is the chosen command
+
+        data = cmd
+        
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+
+    if (cmd == "4"): # Press 4 to take a picture
+        # data[0] is the chosen command
+        # data[1] is the picture file name
 
         fileName = input("File name: ")
 
         data = cmd + " " + fileName
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
         savePath = "Server/Pictures/" + fileName + "/"
         if not os.path.exists(savePath):
@@ -99,7 +102,7 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.listen(1) #en vez de 1 habria que poner el numero de camaras que tenga
+        receive_socket.listen(1) # en vez de 1 habria que poner el numero de camaras que tenga
 
         print ('Waiting for image...')
 
@@ -121,9 +124,9 @@ while True:
 
         print ('Image received successfully!')
 
-    if (cmd == "5"):
-        # data[0] seria el comando cmd
+    if (cmd == "5"): # Press 5 to check what raspberries are listening
+        # data[0] is the chosen command
 
         data = cmd
         
-        sock.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
