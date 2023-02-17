@@ -117,23 +117,22 @@ BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the so
 # MAIN
 
 # Conection with the server
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(('', MULTICAST_COMMAND_PORT))
-mreq = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GROUP), socket.INADDR_ANY)
-s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+cmd_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+cmd_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+cmd_socket.bind(('', MULTICAST_COMMAND_PORT))
+multicastStruct = struct.pack("4sl", socket.inet_aton(MULTICAST_CAMERA_GROUP), socket.INADDR_ANY)
+cmd_socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, multicastStruct)
 
 print ("\n3D Scanner - Socket listening\n")
 
-# WAITING SERVER COMMANDS
+# Listening loop
 
 with picamera.PiCamera() as camera:
     
     print ("Camera setup, waiting for command\n")
     
     while True:
-        #newdata = s.recv(BUFFER_SIZE)
-        newdata, address = s.recvfrom(BUFFER_SIZE)
+        newdata, address = cmd_socket.recvfrom(BUFFER_SIZE)
         SENDER_IP = address[0]
         print ("Got new data from the server")
         data = newdata.decode().split()
