@@ -1,5 +1,7 @@
 import socket
 import os
+import threading
+import time
 
 #___________________FUNCTIONS___________________#
 
@@ -13,6 +15,27 @@ def get_device_ip():
     s.close()
     return device_ip
 
+def handle_connection(connection, fileName):
+    savePath = "Server/Pictures/" + fileName + "/"
+    os.makedirs(savePath, exist_ok=True)
+
+    sender_ip = connection.getpeername()[0].split('.')[-1]
+    receivedImageName = fileName + '_' + str(sender_ip)
+
+    with open(savePath + receivedImageName + '.png', 'wb') as image:
+        try:
+            while True:
+                imageData = connection.recv(BUFFER_SIZE)
+                if not imageData:
+                    break
+                image.write(imageData)
+        except Exception as e:
+            print("Error during image reception:", e)
+        finally:
+            connection.close()
+
+    print('Image received from', sender_ip)
+
 #___________________CODE___________________#
 
 # CONSTANT VARIABLES
@@ -21,6 +44,7 @@ MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for
 MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
 IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
+NUM_CAMERAS = 2 # Number of raspberries with cameras in the escaner
 
 # MAIN
 
@@ -97,32 +121,29 @@ while True:
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
         savePath = "Server/Pictures/" + fileName + "/"
-        if not os.path.exists(savePath):
-            os.makedirs(savePath)
+        os.makedirs(savePath, exist_ok=True)
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
         receive_socket.listen(1) # en vez de 1 habria que poner el numero de camaras que tenga
 
-        print ('Waiting for image...')
+        print('Waiting for image...')
+        
+        for i in range(NUM_CAMERAS):
 
-        connection, client_address = receive_socket.accept()
+            receive_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+            receive_socket.listen(1)
+            connection, client_address = receive_socket.accept()
+            
+            print('Connected by', client_address)
 
-        print ('Connected by', client_address[0])
+            # Start a new thread to handle the connection
+            t = threading.Thread(target=handle_connection, args=(connection, fileName))
+            t.start()
 
-        sender_ip = client_address[0].split(".")[-1]
-        receivedImageName = fileName + "_" + str(sender_ip)
-
-        with open(savePath + receivedImageName + '.png', 'wb') as image:
-            while True:
-                imageData = connection.recv(BUFFER_SIZE)
-                if not imageData:
-                    break
-                image.write(imageData)
-
-        connection.close()
-
-        print ('Image received successfully!')
+        time.sleep(2)
+        print ('Images received successfully!\n')
 
     if (cmd == "5"): # Press 5 to check what raspberries are listening
         # data[0] is the chosen command
