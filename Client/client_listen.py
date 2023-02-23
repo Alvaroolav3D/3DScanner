@@ -53,7 +53,7 @@ def installPython3(): #2
 
     return "Done. Now you have Python updated"
 
-def synchronizeTime():
+def synchronize_time():
 
     ntp_client = ntplib.NTPClient()
 
@@ -65,16 +65,7 @@ def synchronizeTime():
         # Get the current time from the NTP server
         ntp_time = response.tx_time
         # Convert the NTP time to a readable format
-        print(data[1])
-        print(ntp_time)
-        a = float(data[1])
         current_time = datetime.fromtimestamp(ntp_time)
-        pc_time = datetime.fromtimestamp(a)
-        
-        print()
-        print(pc_time)
-        print(current_time)
-
         # Set the system time to the current time
         
         os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -86,7 +77,6 @@ def synchronizeTime():
         # Calculate the time difference between the Raspberry Pi and your laptop
         time_diff = laptop_time_after_sync - pi_time_before_sync
         print("Time difference between Raspberry Pi and laptop:", time_diff, "seconds")
-        
     except Exception as e:
         print("Error syncing time with NTP server:", e)
 
