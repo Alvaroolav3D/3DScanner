@@ -127,7 +127,7 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.listen(1) # en vez de 1 habria que poner el numero de camaras que tenga
+        receive_socket.listen(NUM_CAMERAS) # en vez de 1 habria que poner el numero de camaras que tenga
 
         print('Waiting for image...')
         
@@ -146,6 +146,7 @@ while True:
 
         time.sleep(2)
         print ('Images received successfully!\n')
+        receive_socket.close()
 
     if (cmd == "5"): # Press 5 to check what raspberries are listening
         # data[0] is the chosen command
@@ -156,18 +157,22 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
         ips_listening = []
 
         for i in range(NUM_CAMERAS):
-            connection, client_address = receive_socket.accept()
-            sender_ip = connection.getpeername()[0].split('.')[-1]
-            
-            print(sender_ip)
-
-            ips_listening.append(sender_ip)
-            connection.close()
+            try:
+                connection, client_address = receive_socket.accept()
+                sender_ip = connection.getpeername()[0].split('.')[-1]
+                print(sender_ip)
+                ips_listening.append(sender_ip)
+                connection.close()
+            except socket.timeout:
+                print("Timed out waiting for connection.")
+                break
         
         time.sleep(2)
         print(ips_listening)
+        receive_socket.close()
