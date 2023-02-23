@@ -77,7 +77,7 @@ def synchronizeTime():
 
         # Set the system time to the current time
         
-        os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
+        os.system('sudo date --set="%s"' % pc_time.strftime('%Y-%m-%d %H:%M:%S'))
         print("Time synchronized with NTP server:", SENDER_IP)
 
         # Get the current time on your laptop
