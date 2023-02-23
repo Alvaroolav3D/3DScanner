@@ -67,9 +67,9 @@ def synchronizeTime():
         # Convert the NTP time to a readable format
         print(data[1])
         print(ntp_time)
-        
+        a = float(data[1])
         current_time = datetime.fromtimestamp(ntp_time)
-        pc_time = datetime.fromtimestamp(int(data[1]))
+        pc_time = datetime.fromtimestamp(a)
         
         print()
         print(pc_time)
