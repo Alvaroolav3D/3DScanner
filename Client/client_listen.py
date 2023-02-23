@@ -66,10 +66,10 @@ def synchronizeTime():
         ntp_time = response.tx_time
         # Convert the NTP time to a readable format
         current_time = datetime.fromtimestamp(ntp_time)
-        
-        print("paquete time " + str(data[1]))
+        pc_time = datetime.fromtimestamp(data[1])
+        print("paquete time " + str(pc_time))
         print("ntp time ", str(current_time))
-        print("Time difference between pc ntp and pc paquet:", n, "seconds")
+
         # Set the system time to the current time
         
         os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
