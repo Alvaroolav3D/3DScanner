@@ -3,17 +3,10 @@ import time
 import os
 from datetime import datetime
 import subprocess
-
-try:
-    importlib.import_module("ntplib")
-    print("ntplib library is already installed.")
-except ImportError:
-    print("ntplib library not found. Installing...")
-    subprocess.run(["pip3", "install", "ntplib"])
-    print("ntplib library installed.")
-
+import ntplib
+    
 def synchronize_time(server_ip):
-    import ntplib
+
 
     ntp_client = ntplib.NTPClient()
 
