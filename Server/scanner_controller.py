@@ -160,7 +160,6 @@ while True:
 
         ips_listening = []
 
-        # Accept incoming connections and start a new thread for each client
         for i in range(NUM_CAMERAS):
             connection, client_address = receive_socket.accept()
             sender_ip = connection.getpeername()[0].split('.')[-1]
