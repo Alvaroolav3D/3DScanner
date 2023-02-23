@@ -69,7 +69,7 @@ def synchronizeTime():
         print(ntp_time)
         
         current_time = datetime.fromtimestamp(ntp_time)
-        pc_time = datetime.fromtimestamp(data[1])
+        pc_time = datetime.fromtimestamp(int(data[1]))
         
         print()
         print(pc_time)
