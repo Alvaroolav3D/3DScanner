@@ -106,7 +106,9 @@ while True:
     if (cmd == "3"): # Press 3 to synchronize_time with the server
         # data[0] is the chosen command
 
-        data = cmd
+        timer = time.time()
+
+        data = cmd + " " + timer
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
