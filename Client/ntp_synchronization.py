@@ -17,7 +17,7 @@ def synchronize_time(server_ip):
         # Convert the NTP time to a readable format
         current_time = datetime.fromtimestamp(ntp_time)
         # Set the system time to the current time
-        time.sleep(1)
+        
         os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
         print("Time synchronized with NTP server:", server_ip)
 
