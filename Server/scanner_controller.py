@@ -44,7 +44,7 @@ MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for
 MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
 IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
-NUM_CAMERAS = 2 # Number of raspberries with cameras in the escaner
+NUM_CAMERAS = 1 # Number of raspberries with cameras in the escaner
 
 # MAIN
 

@@ -3,6 +3,7 @@ Description=Client Listen Service
 After=launcher.service
 
 [Service]
+User=pi
 Type=simple
 ExecStart=/usr/bin/python3 /home/pi/Desktop/3DScanner/Client/client_listen.py
 Restart=always

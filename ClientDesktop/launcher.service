@@ -4,6 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+User=pi
 ExecStartPre=/bin/sleep 30
 ExecStart=/usr/bin/python3 /home/pi/Desktop/git_Update_Repository.py
 
