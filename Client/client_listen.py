@@ -66,9 +66,9 @@ def synchronizeTime():
         ntp_time = response.tx_time
         # Convert the NTP time to a readable format
         current_time = datetime.fromtimestamp(ntp_time)
-        n = data[1] - current_time
-        print("paquete time ", data[1])
-        print("ntp time ", current_time)
+        n = float(data[1]) - float(current_time)
+        print("paquete time " + str(data[1]))
+        print("ntp time ", str(current_time))
         print("Time difference between pc ntp and pc paquet:", n, "seconds")
         # Set the system time to the current time
         
