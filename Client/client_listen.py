@@ -114,6 +114,15 @@ def takePhoto(): #4
     return "Sent picture to: " + SENDER_IP
 
 def checkListening(): #5
+    # Send message to the server
+
+    message =b"yes"
+
+    send_socket = socket.socket()
+    send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
+    send_socket.send(message)
+
+    send_socket.close()
     return "Done."
 
 def default():

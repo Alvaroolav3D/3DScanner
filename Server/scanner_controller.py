@@ -135,7 +135,7 @@ while True:
 
             receive_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-            receive_socket.listen(1)
+            receive_socket.listen(NUM_CAMERAS)
             connection, client_address = receive_socket.accept()
             
             print('Connected by', client_address)
@@ -153,3 +153,22 @@ while True:
         data = cmd
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+
+        receive_socket = socket.socket()
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.listen(NUM_CAMERAS)
+
+        ips_listening = []
+
+        # Accept incoming connections and start a new thread for each client
+        for i in range(NUM_CAMERAS):
+            connection, client_address = receive_socket.accept()
+            sender_ip = connection.getpeername()[0].split('.')[-1]
+            
+            print(sender_ip)
+
+            ips_listening.append(sender_ip)
+            connection.close()
+        
+        time.sleep(2)
+        print(ips_listening)
