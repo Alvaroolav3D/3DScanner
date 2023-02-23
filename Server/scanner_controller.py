@@ -108,7 +108,7 @@ while True:
 
         timer = time.time()
 
-        data = cmd + " " + timer
+        data = cmd + " " + str(timer)
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 

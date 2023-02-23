@@ -72,7 +72,6 @@ def synchronizeTime():
         print("Time difference between pc ntp and pc paquet:", n, "seconds")
         # Set the system time to the current time
         
-        '''
         os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
         print("Time synchronized with NTP server:", SENDER_IP)
 
@@ -82,7 +81,7 @@ def synchronizeTime():
         # Calculate the time difference between the Raspberry Pi and your laptop
         time_diff = laptop_time_after_sync - pi_time_before_sync
         print("Time difference between Raspberry Pi and laptop:", time_diff, "seconds")
-        '''
+        
     except Exception as e:
         print("Error syncing time with NTP server:", e)
 
