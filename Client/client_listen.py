@@ -53,7 +53,7 @@ def installPython3(): #2
 
     return "Done. Now you have Python updated"
 
-def synchronize_time():
+def synchronizeTime():
 
     ntp_client = ntplib.NTPClient()
 
