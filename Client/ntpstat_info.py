@@ -1,17 +1,32 @@
 import subprocess
 
 def get_ntpstat_info():
-    output = subprocess.check_output(['ntpstat']).decode('utf-8')
-    lines = output.strip().split('\n')
-    if len(lines) < 2:
-        return None
-    status = lines[0].split(': ')[1]
-    synced_server = lines[1].split(' ')[-1]
-    return {'status': status, 'server': synced_server}
+    try:
+        output = subprocess.check_output(['ntpstat'])
+        lines = output.decode().strip().split('\n')
+        status = lines[0].split(': ')[1]
+        info = lines[1:]
+        return status, info
+    except subprocess.CalledProcessError as e:
+        return 'error', [e.output.decode().strip()]
+
+def get_ntp_service_status():
+    try:
+        output = subprocess.check_output(['systemctl', 'status', 'ntp'])
+        lines = output.decode().strip().split('\n')
+        status = lines[2].split(':')[1].strip()
+        return status
+    except subprocess.CalledProcessError as e:
+        return 'error'
 
 ntpstat_info = get_ntpstat_info()
-if ntpstat_info:
-    print('NTP status:', ntpstat_info['status'])
-    print('Synced server:', ntpstat_info['server'])
+ntp_service_status = get_ntp_service_status()
+
+print('NTP service status:', ntp_service_status)
+
+if ntpstat_info[0] == 'synchronised':
+    print('NTP status: synced')
+    print('\n'.join(ntpstat_info[1]))
 else:
-    print('NTP status information not available')
+    print('NTP status:', ntpstat_info[0])
+    print('\n'.join(ntpstat_info[1]))

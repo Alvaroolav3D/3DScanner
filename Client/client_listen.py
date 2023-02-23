@@ -53,7 +53,7 @@ def installPython3(): #2
 
     return "Done. Now you have Python updated"
 
-def synchronizeTime(server_ip):
+def synchronizeTime():
 
     ntp_client = ntplib.NTPClient()
 
@@ -61,7 +61,7 @@ def synchronizeTime(server_ip):
     pi_time_before_sync = time.time()
 
     try:
-        response = ntp_client.request(server_ip, version=3)
+        response = ntp_client.request(SENDER_IP, version=3)
         # Get the current time from the NTP server
         ntp_time = response.tx_time
         # Convert the NTP time to a readable format
@@ -69,7 +69,7 @@ def synchronizeTime(server_ip):
         # Set the system time to the current time
         
         os.system('sudo date --set="%s"' % current_time.strftime('%Y-%m-%d %H:%M:%S'))
-        print("Time synchronized with NTP server:", server_ip)
+        print("Time synchronized with NTP server:", SENDER_IP)
 
         # Get the current time on your laptop
         laptop_time_after_sync = time.time()
