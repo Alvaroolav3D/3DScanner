@@ -170,9 +170,9 @@ while True:
                 ips_listening.append(sender_ip)
                 connection.close()
             except socket.timeout:
-                print("Timed out waiting for connection.")
+                print("Timed out waiting for connection.\n")
                 break
         
         time.sleep(2)
-        print(ips_listening)
+        print(ips_listening, "\n")
         receive_socket.close()
