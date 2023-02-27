@@ -173,6 +173,6 @@ while True:
                 print("Timed out waiting for connection.\n")
                 break
         
-        time.sleep(2)
+        time.sleep(1)
         print(ips_listening, "\n")
         receive_socket.close()
