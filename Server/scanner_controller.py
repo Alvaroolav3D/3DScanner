@@ -96,13 +96,57 @@ while True:
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
+        receive_socket = socket.socket()
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.settimeout(5)
+        receive_socket.listen(NUM_CAMERAS)
+
+        ips_listening = []
+
+        for i in range(NUM_CAMERAS):
+            try:
+                connection, client_address = receive_socket.accept()
+                sender_ip = connection.getpeername()[0].split('.')[-1]
+                print(sender_ip)
+                ips_listening.append(sender_ip)
+                connection.close()
+            except socket.timeout:
+                print("Timed out waiting for connection.\n")
+                break
+        
+        time.sleep(1)
+        print(ips_listening, "\n")
+        receive_socket.close()
+
     if (cmd == "2"): # Press 2 to install or update Python3
         # data[0] is the chosen command
 
         data = cmd
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        
+        receive_socket = socket.socket()
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.settimeout(5)
+        receive_socket.listen(NUM_CAMERAS)
 
+        ips_listening = []
+
+        for i in range(NUM_CAMERAS):
+            try:
+                connection, client_address = receive_socket.accept()
+                sender_ip = connection.getpeername()[0].split('.')[-1]
+                print(sender_ip)
+                ips_listening.append(sender_ip)
+                connection.close()
+            except socket.timeout:
+                print("Timed out waiting for connection.\n")
+                break
+        
+        time.sleep(1)
+        print(ips_listening, "\n")
+        receive_socket.close()
+        
     if (cmd == "3"): # Press 3 to synchronize_time with the server
         # data[0] is the chosen command
 
@@ -111,6 +155,28 @@ while True:
         data = cmd + " " + str(timer)
         
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
+        
+        receive_socket = socket.socket()
+        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.settimeout(5)
+        receive_socket.listen(NUM_CAMERAS)
+
+        ips_listening = []
+
+        for i in range(NUM_CAMERAS):
+            try:
+                connection, client_address = receive_socket.accept()
+                sender_ip = connection.getpeername()[0].split('.')[-1]
+                print(sender_ip)
+                ips_listening.append(sender_ip)
+                connection.close()
+            except socket.timeout:
+                print("Timed out waiting for connection.\n")
+                break
+        
+        time.sleep(1)
+        print(ips_listening, "\n")
+        receive_socket.close()
 
     if (cmd == "4"): # Press 4 to take a picture
         # data[0] is the chosen command

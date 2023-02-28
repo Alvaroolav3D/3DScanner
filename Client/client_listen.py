@@ -29,6 +29,13 @@ def systemUpdate(): #1
 
     subprocess.run(["sudo", "apt-get", "update"])
     subprocess.run(["sudo", "apt-get", "upgrade", "-y"])
+    
+    message =b""
+    send_socket = socket.socket()
+    send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
+    send_socket.send(message)
+    send_socket.close()
+    
     return "Upgrade completed"
 
 def installPython3(): #2
@@ -51,6 +58,12 @@ def installPython3(): #2
     subprocess.run(["sudo", "apt-get", "update"])
     subprocess.run(["sudo", "apt-get", "install", "-y", "python3"])
 
+    message =b""
+    send_socket = socket.socket()
+    send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
+    send_socket.send(message)
+    send_socket.close()
+    
     return "Done. Now you have Python updated"
 
 def synchronizeTime():
@@ -77,6 +90,13 @@ def synchronizeTime():
         # Calculate the time difference between the Raspberry Pi and your laptop
         time_diff = laptop_time_after_sync - pi_time_before_sync
         print("Time difference between Raspberry Pi and laptop:", time_diff, "seconds")
+        
+        message = bytes(str(time_diff), encoding='utf-8')
+        send_socket = socket.socket()
+        send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
+        send_socket.send(message)
+        send_socket.close()
+        
     except Exception as e:
         print("Error syncing time with NTP server:", e)
 
@@ -116,13 +136,12 @@ def takePhoto(): #4
 def checkListening(): #5
     # Send message to the server
 
-    message =b"yes"
-
+    message =b""
     send_socket = socket.socket()
     send_socket.connect((SENDER_IP, IMAGE_TRANSFER_PORT))
     send_socket.send(message)
-
     send_socket.close()
+    
     return "Done."
 
 def default():
