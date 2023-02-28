@@ -2,6 +2,7 @@ import socket
 import os
 import threading
 import time
+import statistics
 
 #___________________FUNCTIONS___________________#
 
@@ -98,7 +99,6 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
         ips_listening = []
@@ -161,21 +161,27 @@ while True:
         receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
-        ips_listening = []
+        ips_timeDiffs = []
+        timeDiffs = []
 
         for i in range(NUM_CAMERAS):
             try:
                 connection, client_address = receive_socket.accept()
                 sender_ip = connection.getpeername()[0].split('.')[-1]
-                print(sender_ip)
-                ips_listening.append(sender_ip)
+                message = float(connection.recv(1024).decode('utf-8'))
+                ips_timeDiffs.append((sender_ip, message))
+                timeDiffs.append(message)
                 connection.close()
             except socket.timeout:
                 print("Timed out waiting for connection.\n")
                 break
         
+        mean = statistics.mean(timeDiffs)
+        
         time.sleep(1)
-        print(ips_listening, "\n")
+        print(ips_timeDiffs, "\n")
+        print("The max difference is: ", max(timeDiffs) - min(timeDiffs)," seconds\n")
+        print("The mean is: ", mean, "\n")
         receive_socket.close()
 
     if (cmd == "4"): # Press 4 to take a picture
