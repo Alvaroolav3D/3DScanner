@@ -37,6 +37,17 @@ def handle_connection(connection, fileName):
 
     print('Image received from', sender_ip)
 
+def check_Detected_Devices(detected_Devices):
+    c_Dictionary = {0: "1B", 1: "1A", 2: "2B", 3: "2A", 4: "3B", 5: "3A", 6: "4B", 7: "4A", 8: "5A", 9: "6B", 10: "6A", 11: "7B", 12: "7A", 13: "8B", 14: "8A", 15: "9B", 16: "9A"}
+    missing_Devices = []
+
+    for i in range(len(scaner_Devices)):
+        missing = [val for val in scaner_Devices[i] if val not in detected_Devices]
+        missing_Devices.append(missing)
+
+    for i in range(len(missing_Devices)):
+        print("Valores faltantes en", c_Dictionary[i], ":", missing_Devices[i])
+    
 #___________________CODE___________________#
 
 # CONSTANT VARIABLES
@@ -47,25 +58,27 @@ IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once the
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
 NUM_CAMERAS = 74 # Number of raspberries with cameras in the escaner
 
-#        00    01   02   03    04
-#        05    06   07   08    09
-c_1B = ['10', '11', '12', '13', '14'] #5
-c_1A = ['15', '16', '17', '18'] #4
-c_2B = ['20', '21', '22', '23'] #4
-c_2A = ['25', '26', '27', '28'] #4
-c_3B = ['30', '31', '32', '33'] #4
-c_3A = ['35', '36', '37', '38'] #4
-c_4B = ['40', '41', '42', '43'] #4
-c_4A = ['45', '46', '47', '48', '49'] #5
-c_5A = ['50', '51', '52', '53', '54'] #5
-c_6B = ['60', '61', '62', '63', '64'] #5
-c_6A = ['65', '66', '67', '68'] #4
-c_7B = ['70', '71', '72', '73'] #4
-c_7A = ['75', '76', '77', '78'] #4
-c_8B = ['80', '81', '82', '83'] #4
-c_8A = ['', '', '', ''] #4
-c_9B = ['', '', '', '', ''] #5
-c_9A = ['', '', '', '', ''] #5
+scaner_Devices = [
+#     00    01    02    03    04
+#     05    06    07    08    09
+    ['10', '11', '12', '13', '14'], #1B
+    ['15', '16', '17', '18'], #1A
+    ['20', '21', '22', '23'], #2B
+    ['25', '26', '27', '28'], #2A
+    ['30', '31', '32', '33'], #3B
+    ['35', '36', '37', '38'], #3A
+    ['40', '41', '42', '43'], #4B
+    ['45', '46', '47', '48', '49'], #4A
+    ['50', '51', '52', '53', '54'], #5A
+    ['60', '61', '62', '63', '64'], #6B
+    ['65', '66', '67', '68'], #6A
+    ['70', '71', '72', '73'], #7B
+    ['75', '76', '77', '78'], #7A
+    ['80', '81', '82', '83'], #8B
+    ['', '', '', ''], #8A
+    ['', '', '', '', ''], #9B
+    ['', '', '', '', ''], #9A
+]
 
 # MAIN
 
@@ -121,21 +134,21 @@ while True:
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
         receive_socket.listen(NUM_CAMERAS)
 
-        ips_listening = []
+        system_update_Done = []
 
         for i in range(NUM_CAMERAS):
             try:
                 connection, client_address = receive_socket.accept()
                 sender_ip = connection.getpeername()[0].split('.')[-1]
                 print(sender_ip)
-                ips_listening.append(sender_ip)
+                system_update_Done.append(sender_ip)
                 connection.close()
             except socket.timeout:
                 print("Timed out waiting for connection.\n")
                 break
         
         time.sleep(1)
-        print(ips_listening, "\n")
+        print(system_update_Done, "\n")
         receive_socket.close()
 
     if (cmd == "2"): # Press 2 to install or update Python3
@@ -150,21 +163,21 @@ while True:
         receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
-        ips_listening = []
+        python_update_Done = []
 
         for i in range(NUM_CAMERAS):
             try:
                 connection, client_address = receive_socket.accept()
                 sender_ip = connection.getpeername()[0].split('.')[-1]
                 print(sender_ip)
-                ips_listening.append(sender_ip)
+                python_update_Done.append(sender_ip)
                 connection.close()
             except socket.timeout:
                 print("Timed out waiting for connection.\n")
                 break
         
         time.sleep(1)
-        print(ips_listening, "\n")
+        print(python_update_Done, "\n")
         receive_socket.close()
         
     if (cmd == "3"): # Press 3 to synchronize_time with the server
@@ -266,5 +279,7 @@ while True:
                 break
         
         time.sleep(1)
-        print(ips_listening, "\n", "Detected: ", len(ips_listening))
+        
+        check_Detected_Devices(ips_listening)
+
         receive_socket.close()
