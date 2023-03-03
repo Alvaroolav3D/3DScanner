@@ -45,7 +45,27 @@ MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for
 MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
 IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
-NUM_CAMERAS = 1 # Number of raspberries with cameras in the escaner
+NUM_CAMERAS = 74 # Number of raspberries with cameras in the escaner
+
+#        00    01   02   03    04
+#        05    06   07   08    09
+c_1B = ['10', '11', '12', '13', '14'] #5
+c_1A = ['15', '16', '17', '18'] #4
+c_2B = ['20', '21', '22', '23'] #4
+c_2A = ['25', '26', '27', '28'] #4
+c_3B = ['30', '31', '32', '33'] #4
+c_3A = ['35', '36', '37', '38'] #4
+c_4B = ['40', '41', '42', '43'] #4
+c_4A = ['45', '46', '47', '48', '49'] #5
+c_5A = ['50', '51', '52', '53', '54'] #5
+c_6B = ['60', '61', '62', '63', '64'] #5
+c_6A = ['65', '66', '67', '68'] #4
+c_7B = ['70', '71', '72', '73'] #4
+c_7A = ['75', '76', '77', '78'] #4
+c_8B = ['80', '81', '82', '83'] #4
+c_8A = ['', '', '', ''] #4
+c_9B = ['', '', '', '', ''] #5
+c_9A = ['', '', '', '', ''] #5
 
 # MAIN
 
@@ -246,5 +266,5 @@ while True:
                 break
         
         time.sleep(1)
-        print(ips_listening, "\n")
+        print(ips_listening, "\n", "Detected: ", len(ips_listening))
         receive_socket.close()

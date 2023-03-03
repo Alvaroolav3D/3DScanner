@@ -36,3 +36,15 @@ ESTO FUNCIONA POR ALGUN MOTIVO
 
 git config --global --unset http.proxy
 git config --global --unset https.proxy
+________________________________________________________
+
+sudo systemctl status launcher
+sudo systemctl status listener
+sudo systemctl status smbd
+
+sudo systemctl enable listener
+sudo python3 Desktop/3DScanner/Client/static_IP_establisher.py
+192.168.1.1
+192.168.1.82
+
+\\192.168.1.13\scanner
