@@ -49,9 +49,20 @@ sudo python3 Desktop/3DScanner/Client/static_IP_establisher.py
 
 \\192.168.1.13\scanner
 
+______________________________________
+
 sudo nano  /etc/systemd/system/listener.service
 
 RestartSec=5s
 sudo systemctl daemon-reload
 
-tiempo aproximado que tarda en hacer un reboot completo 1:30 y funciona bien
+______________________________________
+
+sudo chmod -R 777 /home/pi/Desktop/3DScanner
+sudo nano /etc/samba/smb.conf
+
+    writable = yes
+    create mask = 0777
+    directory mask = 0777
+
+sudo systemctl restart smbd
