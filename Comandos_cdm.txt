@@ -3,7 +3,7 @@ ___________Actualizar repositorio___________
 cd ~ && cd Desktop && python3 git_Update_Repository.py
 
 cd ~ && cd Desktop/3DScanner/Client && python3 ...
-
+sudo python3 Desktop/3DScanner/Client/client_listen.py
 ___________Borrar carpeta___________
 
 sudo rm -r 3DScanner
@@ -45,6 +45,13 @@ sudo systemctl status smbd
 sudo systemctl enable listener
 sudo python3 Desktop/3DScanner/Client/static_IP_establisher.py
 192.168.1.1
-192.168.1.82
+192.168.1.65
 
 \\192.168.1.13\scanner
+
+sudo nano  /etc/systemd/system/listener.service
+
+RestartSec=5s
+sudo systemctl daemon-reload
+
+tiempo aproximado que tarda en hacer un reboot completo 1:30 y funciona bien

@@ -6,16 +6,6 @@ import statistics
 
 #___________________FUNCTIONS___________________#
 
-def get_device_ip():
-# Connect to a google DNS server that is always active
-# to simply check what the ip of my device is
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    device_ip = s.getsockname()[0]
-    s.close()
-    return device_ip
-
 def handle_connection(connection, fileName):
     savePath = "Server/Pictures/" + fileName + "/"
     os.makedirs(savePath, exist_ok=True)
@@ -46,7 +36,7 @@ def check_Detected_Devices(detected_Devices):
         missing_Devices.append(missing)
 
     for i in range(len(missing_Devices)):
-        print("Valores faltantes en", c_Dictionary[i], ":", missing_Devices[i])
+        print("Missing devices in", c_Dictionary[i], ":", missing_Devices[i])
     
 #___________________CODE___________________#
 
@@ -232,22 +222,23 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.settimeout(10)
         receive_socket.listen(NUM_CAMERAS) # en vez de 1 habria que poner el numero de camaras que tenga
 
         print('Waiting for image...')
         
         for i in range(NUM_CAMERAS):
+            try:
+                connection, client_address = receive_socket.accept()
+                
+                print('Connected by', client_address)
 
-            receive_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-            receive_socket.listen(NUM_CAMERAS)
-            connection, client_address = receive_socket.accept()
-            
-            print('Connected by', client_address)
-
-            # Start a new thread to handle the connection
-            t = threading.Thread(target=handle_connection, args=(connection, fileName))
-            t.start()
+                # Start a new thread to handle the connection
+                t = threading.Thread(target=handle_connection, args=(connection, fileName))
+                t.start()
+            except socket.timeout:
+                print("Timed out waiting for connection.\n")
+                break
 
         time.sleep(2)
         print ('Images received successfully!\n')
@@ -281,5 +272,7 @@ while True:
         time.sleep(1)
         
         check_Detected_Devices(ips_listening)
+        
+        print("Detected: ", len(ips_listening), "\n")
 
         receive_socket.close()
