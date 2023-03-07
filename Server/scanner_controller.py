@@ -222,7 +222,7 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.settimeout(10)
+        receive_socket.settimeout(4)
         receive_socket.listen(NUM_CAMERAS) # en vez de 1 habria que poner el numero de camaras que tenga
 
         print('Waiting for image...')
@@ -253,7 +253,7 @@ while True:
 
         receive_socket = socket.socket()
         receive_socket.bind(('', IMAGE_TRANSFER_PORT))
-        receive_socket.settimeout(5)
+        receive_socket.settimeout(1)
         receive_socket.listen(NUM_CAMERAS)
 
         ips_listening = []
