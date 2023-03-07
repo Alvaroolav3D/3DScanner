@@ -1,8 +1,9 @@
 import os
 import shutil
 import platform
+import time
 
-scaner_Devices = [
+scanner_Devices = [
 #     00    01    02    03    04
 #     05    06    07    08    09
     ['10', '11', '12', '13', '14'], #1B
@@ -19,31 +20,34 @@ scaner_Devices = [
     ['70', '71', '72', '73'], #7B
     ['75', '76', '77', '78'], #7A
     ['80', '81', '82', '83'], #8B
-    ['', '', '', ''], #8A
-    ['', '', '', '', ''], #9B
-    ['', '', '', '', ''], #9A
 ]
 
 # Path of the directory you want to copy
 source_path = ''
 if platform.system() == 'Windows':
-    print("windows")
-    source_path = r'c:/Users/Alvaro/OneDrive - Universidad Rey Juan Carlos/Escritorio/3DScanner/Prueba'
+    print("windows server")
+    source_path = r'c:/Users/Alvaro/OneDrive - Universidad Rey Juan Carlos/Escritorio/3DScanner/Client'
 elif platform.system() == 'Linux':
+    print("Linux server")
     source_path = '/path/to/directory/to/copy'
 
-# Format the destination path with the current IP address
-destination_path = ''
-if platform.system() == 'Windows':
-    destination_path = r'\\192.168.1.10\scanner'
-elif platform.system() == 'Linux':
-    destination_path = '/mnt/192.168.1.10/scanner'
+for column in scanner_Devices:
+    for ip in column:
+        # Format the destination path with the current IP address
+        destination_path = ''
+        if platform.system() == 'Windows':
+            destination_path = fr'\\192.168.1.{ip}\scanner'
+        elif platform.system() == 'Linux':
+            destination_path = f'/mnt/192.168.1.{ip}/scanner'
 
-# Check if the directory already exists in the destination path
-if os.path.exists(os.path.join(destination_path, os.path.basename(source_path))):
-    # If it already exists, replace it
-    shutil.rmtree(os.path.join(destination_path, os.path.basename(source_path)))
-    shutil.copytree(source_path, os.path.join(destination_path, os.path.basename(source_path)))
-else:
-    # If it doesn't exist, paste it
-    shutil.copytree(source_path, os.path.join(destination_path, os.path.basename(source_path)))
+        # Check if the directory already exists in the destination path
+        if os.path.exists(os.path.join(destination_path, os.path.basename(source_path))):
+            # If it already exists, replace it
+            shutil.rmtree(os.path.join(destination_path, os.path.basename(source_path)))
+            #time.sleep(1)
+            shutil.copytree(source_path, os.path.join(destination_path, os.path.basename(source_path)))
+            print(f"La {ip} se ha copiado correctamente: Existe")
+        else:
+            # If it doesn't exist, paste it
+            print(f"La {ip} se ha copiado correctamente: No existe")
+            shutil.copytree(source_path, os.path.join(destination_path, os.path.basename(source_path)))

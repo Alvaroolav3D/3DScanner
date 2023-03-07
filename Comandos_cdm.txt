@@ -54,11 +54,18 @@ ______________________________________
 sudo nano  /etc/systemd/system/listener.service
 
 RestartSec=5s
+
 sudo systemctl daemon-reload
 
 ______________________________________
 
+sudo systemctl daemon-reload
+sudo rm -r Desktop/3DScanner/Client/Pictures
 sudo chmod -R 777 /home/pi/Desktop/3DScanner
+exit
+
+______________________________________
+
 sudo nano /etc/samba/smb.conf
 
     writable = yes

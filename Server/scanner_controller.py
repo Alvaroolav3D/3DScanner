@@ -31,8 +31,8 @@ def check_Detected_Devices(detected_Devices):
     c_Dictionary = {0: "1B", 1: "1A", 2: "2B", 3: "2A", 4: "3B", 5: "3A", 6: "4B", 7: "4A", 8: "5A", 9: "6B", 10: "6A", 11: "7B", 12: "7A", 13: "8B", 14: "8A", 15: "9B", 16: "9A"}
     missing_Devices = []
 
-    for i in range(len(scaner_Devices)):
-        missing = [val for val in scaner_Devices[i] if val not in detected_Devices]
+    for i in range(len(scanner_Devices)):
+        missing = [val for val in scanner_Devices[i] if val not in detected_Devices]
         missing_Devices.append(missing)
 
     for i in range(len(missing_Devices)):
@@ -48,7 +48,7 @@ IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once the
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
 NUM_CAMERAS = 74 # Number of raspberries with cameras in the escaner
 
-scaner_Devices = [
+scanner_Devices = [
 #     00    01    02    03    04
 #     05    06    07    08    09
     ['10', '11', '12', '13', '14'], #1B

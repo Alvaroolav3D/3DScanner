@@ -111,7 +111,7 @@ def takePhoto(): #4
 
     # Create a folder with the file name. Useful if I want to take several photos with different
     # lighting and save them under the same sorted name.
-    savePath = "/home/pi/Desktop/3DScanner/Client/Pictures/" + fileName + "/"
+    savePath = "/home/pi/Desktop/3DScanner/Pictures/" + fileName + "/"
     if not os.path.exists(savePath):
         os.makedirs(savePath)
 
