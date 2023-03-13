@@ -35,7 +35,6 @@ def disable_dhcp_and_set_static_ip(interface, ip_address, gateway):
 
 
 if __name__ == "__main__":
-    #interface = get_interface_name()
     interface = "eth0"
 
     ip_address, netmask, gateway, dns = get_network_config(interface)
