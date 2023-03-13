@@ -14,7 +14,7 @@ def projectPattern():
     option = data[1]
     print ("Option: " + option)
 
-    os.system(f"sudo fbi -a --noverbose --vt 1 {img_files[option]}")
+    os.system(f"sudo fbi -a --noverbose --vt 1 {img_files[int(option)]}")
     time.sleep(display_time)
     os.system(f"sudo fbi -a --noverbose --vt 1 /dev/null") #pantalla en negro
 
