@@ -8,7 +8,7 @@ from datetime import datetime
 
 def projectPattern():
 
-    img_files = ['img1.png', 'img2.png']
+    img_files = ['/home/pi/Desktop/3DScanner/Client/img1.png', '/home/pi/Desktop/3DScanner/Client/img2.png']
     display_time = 1  # segundos
 
     option = data[1]
@@ -16,7 +16,7 @@ def projectPattern():
 
     os.system(f"sudo fbi -a --noverbose --vt 1 {img_files[int(option)]}")
     time.sleep(display_time)
-    os.system(f"sudo fbi -a --noverbose --vt 1 /dev/null") #pantalla en negro
+    os.system(f"sudo fbi -a --noverbose --vt 1 /home/pi/Desktop/3DScanner/Client/black.png") #pantalla en negro
 
     return "Projected"
 
