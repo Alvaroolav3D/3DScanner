@@ -43,14 +43,23 @@ def check_Detected_Devices(detected_Devices):
 # CONSTANT VARIABLES
 
 MULTICAST_CAMERA_GROUP = '225.1.1.1' # Multicast camera address that listens for commands from the server
+MULTICAST_PROJECTOR_GROUP = '225.1.1.2' # Multicast projector address that listens for commands from the server
+MULTICAST_LEDS_GROUP = '225.1.1.3' # Multicast leds address that listens for commands from the server
 MULTICAST_COMMAND_PORT = 3179 # Port that it opens to receive the datagrams with the commands from the server
-IMAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
+
+MESSAGE_TRANSFER_PORT = 5001 # Port used to send the images to the server once they have been made
 BUFFER_SIZE = 10240 # Size of the buffer used in passing messages through the socket
+
 NUM_CAMERAS = 74 # Number of raspberries with cameras in the escaner
+NUM_PROJECTOR = 3 # Number of raspberries with projectors in the escaner
+NUM_LEDS = 1 # Number of raspberries with leds in the escaner
+
 
 scanner_Devices = [
 #     00    01    02    03    04
 #     05    06    07    08    09
+
+#               CAMERAS
     ['10', '11', '12', '13', '14'], #1B
     ['15', '16', '17', '18'], #1A
     ['20', '21', '22', '23'], #2B
@@ -121,7 +130,7 @@ while True:
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
         receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.bind(('', MESSAGE_TRANSFER_PORT))
         receive_socket.listen(NUM_CAMERAS)
 
         system_update_Done = []
@@ -149,7 +158,7 @@ while True:
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
         
         receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.bind(('', MESSAGE_TRANSFER_PORT))
         receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
@@ -180,7 +189,7 @@ while True:
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
         
         receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.bind(('', MESSAGE_TRANSFER_PORT))
         receive_socket.settimeout(5)
         receive_socket.listen(NUM_CAMERAS)
 
@@ -221,7 +230,7 @@ while True:
         os.makedirs(savePath, exist_ok=True)
 
         receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.bind(('', MESSAGE_TRANSFER_PORT))
         receive_socket.settimeout(4)
         receive_socket.listen(NUM_CAMERAS) # en vez de 1 habria que poner el numero de camaras que tenga
 
@@ -252,7 +261,7 @@ while True:
         cmd_socket.sendto(data.encode(), (MULTICAST_CAMERA_GROUP, MULTICAST_COMMAND_PORT))
 
         receive_socket = socket.socket()
-        receive_socket.bind(('', IMAGE_TRANSFER_PORT))
+        receive_socket.bind(('', MESSAGE_TRANSFER_PORT))
         receive_socket.settimeout(1)
         receive_socket.listen(NUM_CAMERAS)
 
@@ -276,3 +285,19 @@ while True:
         print("Detected: ", len(ips_listening), "\n")
 
         receive_socket.close()
+
+    if (cmd == "6"): # Press 6 to project patterns
+        # data[0] is the chosen command
+        # data[1] is the chosen option
+
+        print(
+            "Control commands:\n" +
+            "Press 0 to project 'horizontal pattern'\n" +
+            "Press 1 to project 'vertical pattern'\n"
+            )
+        
+        option = input("What pattern do you want: ")
+
+        data = cmd + " " + option
+        
+        cmd_socket.sendto(data.encode(), (MULTICAST_PROJECTOR_GROUP, MULTICAST_COMMAND_PORT))
