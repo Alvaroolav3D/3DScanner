@@ -2,7 +2,9 @@ import os
 from time import sleep
 
 # lista de nombres de archivo de imagen
-img_files = ['img1.png', 'img2.png']
+img_files = ['/home/pi/Desktop/3DScanner/Client/img1.png', '/home/pi/Desktop/3DScanner/Client/img2.png']
+
+print(os.getcwd())
 
 # tiempo de visualización de cada imagen
 display_time = 1  # segundos
