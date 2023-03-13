@@ -8,7 +8,7 @@ from datetime import datetime
 
 def projectPattern():
 
-    img_files = ['img1.png', 'img2.png', 'img3.png']
+    img_files = ['img1.png', 'img2.png']
     display_time = 1  # segundos
 
     option = data[1]
