@@ -19,5 +19,7 @@ for img_file in img_files:
     # mostrar la imagen durante el tiempo especificado
     os.system(f"sudo fbi -a --noverbose --vt 1 {img_file}")
     sleep(display_time)
+
+os.system(f"sudo fbi -a --noverbose --vt 1 /home/pi/Desktop/3DScanner/Client/black.png") #pantalla en negro
     
 print("Todas las imágenes han sido mostradas.")
